@@ -1,0 +1,1671 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<meta name="theme-color" content="#060812"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-title" content="GharOS"/>
+<meta name="description" content="GharOS – Family Life Manager by KUVEXO CORE"/>
+<title>GharOS – KUVEXO CORE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+
+<!-- ═══════════════════════════════════════════
+     GLOBAL CSS
+═══════════════════════════════════════════ -->
+<style>
+:root{
+  --bg:#060812;--bg2:#090d1a;
+  --blue:#4F9FFF;--blueDark:#1d4ed8;
+  --purple:#9B7EFF;--purpleDark:#5b21b6;
+  --teal:#2DD4BF;--green:#4ADE80;
+  --pink:#F472B6;--orange:#FB923C;--yellow:#FBBF24;
+  --red:#F87171;--gold:#FFD700;--goldLight:#FFF3A3;
+  --text:#F1F5F9;--sub:#94A3B8;--muted:#475569;
+  --card:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.09);
+  --glass:rgba(255,255,255,0.07);
+  --font:'Outfit',sans-serif;--fontD:'Syne',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:var(--font);color:var(--text);}
+input,textarea{user-select:text;-webkit-user-select:text;}
+button{font-family:var(--font);}
+
+/* ─── KEYFRAMES ─── */
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+@keyframes breatheBlur{0%,100%{transform:scale(1);filter:blur(45px)}50%{transform:scale(1.15);filter:blur(60px)}}
+@keyframes orbit1{from{transform:rotate(0deg) translateX(75px) rotate(0deg)}to{transform:rotate(360deg) translateX(75px) rotate(-360deg)}}
+@keyframes orbit2{from{transform:rotate(120deg) translateX(105px) rotate(-120deg)}to{transform:rotate(480deg) translateX(105px) rotate(-480deg)}}
+@keyframes orbit3{from{transform:rotate(240deg) translateX(135px) rotate(-240deg)}to{transform:rotate(600deg) translateX(135px) rotate(-600deg)}}
+@keyframes twinkle{0%,100%{opacity:.15;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
+@keyframes scanLine{0%{top:-1%;opacity:0}8%{opacity:.7}92%{opacity:.7}100%{top:101%;opacity:0}}
+@keyframes logoReveal{0%{letter-spacing:.6em;opacity:0;filter:blur(24px)}65%{letter-spacing:.1em;opacity:.85;filter:blur(3px)}100%{letter-spacing:.05em;opacity:1;filter:blur(0)}}
+@keyframes shimmerText{0%{background-position:200% center}100%{background-position:-200% center}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:scale(1)}}
+@keyframes slideUp{from{transform:translateY(50px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes slideDown{from{transform:translateY(-30px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes progress{from{width:0}to{width:100%}}
+@keyframes glowPulse{0%,100%{box-shadow:0 0 20px var(--glow,#4F9FFF)}50%{box-shadow:0 0 40px var(--glow,#4F9FFF)}}
+@keyframes goldPulse{0%,100%{box-shadow:0 0 16px rgba(255,215,0,.4),0 4px 20px rgba(0,0,0,.5)}50%{box-shadow:0 0 32px rgba(255,215,0,.7),0 4px 20px rgba(0,0,0,.5)}}
+@keyframes particleFloat{0%{transform:translateY(0) translateX(0) scale(1);opacity:0}10%{opacity:.8}90%{opacity:.6}100%{transform:translateY(-160px) translateX(var(--dx,0px)) scale(0);opacity:0}}
+@keyframes neonFlicker{0%,19%,21%,23%,25%,54%,56%,100%{opacity:1}20%,24%,55%{opacity:.7}}
+@keyframes bgAnimate{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes rippleOut{0%{transform:scale(0);opacity:.6}100%{transform:scale(3.5);opacity:0}}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(16px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes modalIn{from{opacity:0;transform:scale(.92) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes undoBar{from{width:100%}to{width:0%}}
+@keyframes iconBounce{0%,100%{transform:scale(1)}40%{transform:scale(1.2)}70%{transform:scale(.95)}}
+
+/* ─── SCREENS ─── */
+.screen{position:absolute;inset:0;display:none;flex-direction:column;overflow:hidden;}
+.screen.active{display:flex;}
+.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.scroll::-webkit-scrollbar{display:none;}
+.pad{padding:0 18px 110px;}
+
+/* ─── CARD ─── */
+.card{background:var(--card);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--border);border-radius:22px;transition:transform .14s ease,opacity .14s ease;}
+.card.tap{cursor:pointer;}
+.card.tap:active{transform:scale(.965);}
+
+/* ─── BADGE ─── */
+.badge{display:inline-block;padding:2px 10px;border-radius:99px;font-size:11px;font-weight:700;letter-spacing:.04em;}
+
+/* ─── BUTTON ─── */
+.btn{border:none;border-radius:16px;padding:14px 22px;font-size:15px;font-weight:700;cursor:pointer;font-family:var(--font);transition:all .2s ease;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn:active{transform:scale(.96);}
+.btn-primary{background:linear-gradient(135deg,var(--blue),var(--blueDark));color:#fff;box-shadow:0 0 24px rgba(79,159,255,.4),0 6px 20px rgba(0,0,0,.4);}
+.btn-gold{background:linear-gradient(135deg,#FFD700,#FFA500,#FFD700);background-size:200% auto;color:#1a0a00;box-shadow:0 0 24px rgba(255,215,0,.45),0 6px 20px rgba(0,0,0,.4);animation:goldPulse 2.5s ease-in-out infinite,shimmerText 3s linear infinite;}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--sub);}
+.btn-danger{background:linear-gradient(135deg,#F87171,#dc2626);color:#fff;}
+
+/* ─── BOTTOM NAV ─── */
+#bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(6,8,18,.9);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border-top:1px solid rgba(255,255,255,.07);display:none;z-index:600;padding:10px 0 22px;}
+.nb{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:4px 0;flex:1;}
+.nb-icon{font-size:22px;}
+.nb-label{font-size:10px;letter-spacing:.04em;color:var(--muted);}
+.nb-label.on{color:var(--blue);}
+.nb-dot{width:4px;height:4px;border-radius:50%;background:var(--blue);box-shadow:0 0 6px var(--blue);}
+
+/* ─── FAB ─── */
+.fab{position:fixed;bottom:82px;right:18px;border:none;border-radius:18px;padding:13px 20px;color:#fff;font-weight:700;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:8px;z-index:500;font-family:var(--font);letter-spacing:.02em;}
+.fab:active{transform:scale(.95);}
+
+/* ─── MODAL OVERLAY ─── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);z-index:800;display:none;align-items:flex-end;justify-content:center;}
+.overlay.center{align-items:center;}
+.overlay.show{display:flex;}
+.modal{background:linear-gradient(160deg,#0e1628,#080c18);border:1px solid rgba(255,255,255,.1);border-radius:28px 28px 0 0;width:100%;max-width:480px;padding:28px 22px 36px;animation:modalIn .35s ease;max-height:88vh;overflow-y:auto;}
+.modal.floating{border-radius:28px;width:calc(100% - 36px);max-width:440px;}
+.modal-handle{width:42px;height:4px;background:rgba(255,255,255,.15);border-radius:99px;margin:0 auto 22px;}
+
+/* ─── FILTER TABS ─── */
+.ftabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none;}
+.ftabs::-webkit-scrollbar{display:none;}
+.ftab{flex-shrink:0;padding:7px 16px;border-radius:99px;font-size:13px;cursor:pointer;font-family:var(--font);border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--sub);transition:all .2s ease;}
+.ftab.on{font-weight:700;}
+
+/* ─── SCREEN HEADER ─── */
+.shdr{display:flex;align-items:center;gap:14px;padding:50px 18px 20px;}
+.back{width:40px;height:40px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid var(--border);color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sico{width:44px;height:44px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+
+/* ─── INPUT ─── */
+.inp{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:14px;padding:13px 16px;color:var(--text);font-size:15px;font-family:var(--font);outline:none;transition:border .2s ease;}
+.inp:focus{border-color:var(--blue);}
+.inp::placeholder{color:var(--muted);}
+
+/* ─── TOAST ─── */
+#toast{position:fixed;bottom:140px;left:50%;transform:translateX(-50%) translateY(10px);background:rgba(15,20,40,.95);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(16px);color:var(--text);padding:10px 20px;border-radius:99px;font-size:13px;z-index:999;opacity:0;transition:all .3s ease;white-space:nowrap;pointer-events:none;max-width:calc(100% - 40px);text-align:center;}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);animation:toastIn .3s ease;}
+
+/* ─── LOCK OVERLAY ─── */
+.lock-banner{background:linear-gradient(135deg,rgba(155,126,255,.12),rgba(79,159,255,.08));border:1px solid rgba(155,126,255,.25);border-radius:18px;padding:20px;text-align:center;margin:10px 0;}
+
+/* ─── WATERMARK ─── */
+#wm{position:fixed;bottom:8px;right:10px;font-size:9px;color:rgba(255,255,255,.12);letter-spacing:.1em;z-index:1000;pointer-events:none;font-family:var(--fontD);}
+
+/* ─── AD BANNER ─── */
+#ad-banner{position:fixed;bottom:72px;left:50%;transform:translateX(-50%);width:calc(100% - 20px);max-width:460px;background:linear-gradient(135deg,rgba(15,20,40,.96),rgba(8,12,28,.96));border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:10px 14px;display:none;align-items:center;gap:12px;z-index:550;backdrop-filter:blur(12px);}
+#ad-banner.show{display:flex;}
+.ad-label{font-size:9px;color:var(--muted);background:rgba(255,255,255,.06);padding:2px 6px;border-radius:4px;flex-shrink:0;}
+.ad-close{margin-left:auto;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.08);border:none;color:var(--muted);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+/* ─── INTERSTITIAL AD ─── */
+#ad-inter{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:900;display:none;flex-direction:column;align-items:center;justify-content:center;}
+#ad-inter.show{display:flex;}
+.inter-skip{position:absolute;top:50px;right:18px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:var(--sub);padding:6px 14px;border-radius:99px;font-size:12px;cursor:pointer;font-family:var(--font);}
+
+/* ─── APP OPEN AD ─── */
+#ad-appopen{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:1050;display:none;flex-direction:column;align-items:center;justify-content:center;}
+#ad-appopen.show{display:flex;}
+
+/* ─── UNDO BAR ─── */
+#undo-bar{position:fixed;bottom:145px;left:50%;transform:translateX(-50%);background:rgba(15,20,40,.97);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:12px 18px;display:none;align-items:center;gap:12px;z-index:700;backdrop-filter:blur(12px);width:calc(100%-36px);max-width:380px;}
+#undo-bar.show{display:flex;}
+#undo-progress{position:absolute;bottom:0;left:0;height:2px;background:var(--blue);border-radius:99px;}
+
+/* ─── ONBOARDING ─── */
+#onboard{position:fixed;inset:0;background:linear-gradient(160deg,#060d1f,var(--bg));z-index:1100;display:none;flex-direction:column;align-items:center;justify-content:center;padding:28px;}
+#onboard.show{display:flex;}
+
+/* ─── PREMIUM SCREEN ─── */
+#premium-overlay{position:fixed;inset:0;background:linear-gradient(160deg,#0a0618,#06080f);z-index:900;display:none;flex-direction:column;overflow-y:auto;}
+#premium-overlay.show{display:flex;}
+
+/* ─── GUIDE SCREEN ─── */
+#guide-overlay{position:fixed;inset:0;background:linear-gradient(160deg,#060d1f,var(--bg));z-index:900;display:none;flex-direction:column;overflow-y:auto;}
+#guide-overlay.show{display:flex;}
+
+/* ─── LANGUAGE BAR ─── */
+#lang-bar{display:flex;gap:8px;justify-content:flex-end;padding:8px 18px 0;}
+.lang-btn{padding:4px 12px;border-radius:99px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--muted);font-family:var(--font);transition:all .2s;}
+.lang-btn.on{background:rgba(79,159,255,.15);border-color:rgba(79,159,255,.4);color:var(--blue);}
+
+/* ─── UTILS ─── */
+.row{display:flex;align-items:center;gap:12px;}
+.col{display:flex;flex-direction:column;}
+.mt8{margin-top:8px;}
+.mt12{margin-top:12px;}
+.mt16{margin-top:16px;}
+.mt20{margin-top:20px;}
+.mb12{margin-bottom:12px;}
+.mb16{margin-bottom:16px;}
+.mb20{margin-bottom:20px;}
+.mb24{margin-bottom:24px;}
+.fw6{font-weight:600;}
+.fw7{font-weight:700;}
+.fs12{font-size:12px;}
+.fs13{font-size:13px;}
+.fs14{font-size:14px;}
+.fs15{font-size:15px;}
+.fs20{font-size:20px;}
+.clr-muted{color:var(--muted);}
+.clr-sub{color:var(--sub);}
+.ta-center{text-align:center;}
+.section-label{font-size:11px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;font-weight:700;margin-bottom:12px;}
+.divider{height:1px;background:var(--border);margin:16px 0;}
+.fu{opacity:0;animation:fadeUp .4s ease forwards;}
+.si{opacity:0;animation:scaleIn .4s ease forwards;}
+.glow-text{background:linear-gradient(135deg,#fff 0%,#93c5fd 40%,#c4b5fd 75%,#fff 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmerText 4s linear infinite;}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════
+     SPLASH SCREEN
+════════════════════════════════════════ -->
+<div class="screen active" id="splash" style="background:radial-gradient(ellipse at 35% 25%,#0e1850 0%,#060812 55%,#0a0520 100%);align-items:center;justify-content:center;overflow:hidden;">
+
+  <!-- Stars -->
+  <div id="stars" style="position:absolute;inset:0;pointer-events:none;"></div>
+
+  <!-- Scan line -->
+  <div style="position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(79,159,255,.6),rgba(155,126,255,.6),transparent);animation:scanLine 3.5s 1s ease-in-out infinite;pointer-events:none;"></div>
+
+  <!-- Ambient orbs -->
+  <div style="position:absolute;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(79,159,255,.16) 0%,transparent 68%);top:-6%;left:-12%;pointer-events:none;animation:breatheBlur 5s ease-in-out infinite;"></div>
+  <div style="position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(155,126,255,.13) 0%,transparent 68%);bottom:-2%;right:-10%;pointer-events:none;animation:breatheBlur 6s 1.5s ease-in-out infinite;"></div>
+  <div style="position:absolute;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(45,212,191,.1) 0%,transparent 68%);bottom:22%;left:4%;pointer-events:none;animation:breatheBlur 7s 3s ease-in-out infinite;"></div>
+
+  <!-- Orbital rings + dots -->
+  <div id="orb-ring" style="position:absolute;width:320px;height:320px;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .8s ease;">
+    <div style="position:absolute;width:230px;height:230px;border-radius:50%;border:1px solid rgba(79,159,255,.14);"></div>
+    <div style="position:absolute;width:290px;height:290px;border-radius:50%;border:1px dashed rgba(155,126,255,.1);"></div>
+    <div style="position:absolute;width:318px;height:318px;border-radius:50%;border:1px solid rgba(45,212,191,.07);"></div>
+    <div style="position:absolute;animation:orbit1 5.5s linear infinite;"><div style="width:8px;height:8px;border-radius:50%;background:#4F9FFF;box-shadow:0 0 14px #4F9FFF,0 0 28px rgba(79,159,255,.5);"></div></div>
+    <div style="position:absolute;animation:orbit2 8s linear infinite;"><div style="width:6px;height:6px;border-radius:50%;background:#9B7EFF;box-shadow:0 0 12px #9B7EFF,0 0 24px rgba(155,126,255,.5);"></div></div>
+    <div style="position:absolute;animation:orbit3 11s linear infinite;"><div style="width:5px;height:5px;border-radius:50%;background:#2DD4BF;box-shadow:0 0 10px #2DD4BF;"></div></div>
+  </div>
+
+  <!-- Logo block -->
+  <div style="position:relative;text-align:center;z-index:10;">
+    <!-- App icon -->
+    <div id="sp-icon" style="width:92px;height:92px;border-radius:28px;background:linear-gradient(135deg,#1a3a8a,#4c1d95,#1e3a8a);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 0 50px rgba(79,159,255,.45),0 0 90px rgba(124,58,237,.25),inset 0 1px 0 rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.14);font-size:44px;opacity:0;transform:scale(.75);transition:all .7s cubic-bezier(.34,1.56,.64,1);">🏠</div>
+
+    <!-- GharOS text -->
+    <div id="sp-text" style="font-family:var(--fontD);font-size:58px;font-weight:800;opacity:0;" class="glow-text">GharOS</div>
+
+    <!-- Under-glow -->
+    <div style="position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);width:220px;height:22px;background:radial-gradient(ellipse,rgba(79,159,255,.55) 0%,transparent 70%);filter:blur(10px);animation:breathe 2.5s ease-in-out infinite;"></div>
+  </div>
+
+  <!-- Tagline -->
+  <div id="sp-tag" style="margin-top:18px;font-size:12px;letter-spacing:.24em;color:rgba(148,163,184,.7);font-weight:400;text-transform:uppercase;opacity:0;z-index:10;transition:all .6s ease;">Your Family's Smart Companion</div>
+
+  <!-- Powered by -->
+  <div id="sp-pow" style="display:flex;align-items:center;gap:8px;margin-top:8px;opacity:0;z-index:10;transition:all .6s ease;">
+    <div style="width:28px;height:1px;background:rgba(148,163,184,.2);"></div>
+    <span style="font-size:11px;color:rgba(148,163,184,.45);letter-spacing:.12em;">powered by</span>
+    <span style="font-size:11px;font-weight:800;letter-spacing:.1em;background:linear-gradient(90deg,#4F9FFF,#9B7EFF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-family:var(--fontD);">KUVEXO CORE</span>
+    <div style="width:28px;height:1px;background:rgba(148,163,184,.2);"></div>
+  </div>
+
+  <!-- Progress bar -->
+  <div id="sp-prog" style="position:absolute;bottom:62px;left:50%;transform:translateX(-50%);width:170px;opacity:0;transition:opacity .5s ease;z-index:10;">
+    <div style="width:100%;height:2px;background:rgba(255,255,255,.07);border-radius:99px;overflow:hidden;">
+      <div id="sp-fill" style="height:100%;border-radius:99px;background:linear-gradient(90deg,#4F9FFF,#9B7EFF,#2DD4BF);width:0;"></div>
+    </div>
+    <div style="text-align:center;margin-top:8px;font-size:11px;color:rgba(148,163,184,.35);letter-spacing:.1em;" id="sp-load-txt">Initializing...</div>
+  </div>
+
+  <!-- Version -->
+  <div style="position:absolute;bottom:20px;font-size:10px;color:rgba(255,255,255,.15);letter-spacing:.08em;">v2.0 · GharOS by KUVEXO CORE</div>
+</div>
+
+<!-- ════════════════════════════════════════
+     ONBOARDING
+════════════════════════════════════════ -->
+<div id="onboard">
+  <div style="text-align:center;margin-bottom:32px;">
+    <div style="font-size:52px;margin-bottom:14px;animation:iconBounce .6s ease;">👋</div>
+    <div style="font-family:var(--fontD);font-size:28px;font-weight:800;" class="glow-text">Swagat Hai!</div>
+    <div style="font-size:14px;color:var(--sub);margin-top:8px;">GharOS mein aapka parivaar add karein</div>
+  </div>
+  <div style="width:100%;max-width:380px;">
+    <div class="section-label">Apna Naam</div>
+    <input class="inp mb16" id="ob-name" placeholder="e.g. Sharma Parivaar" maxlength="30"/>
+    <div class="section-label">Shahar / City</div>
+    <input class="inp mb24" id="ob-city" placeholder="e.g. Delhi, Mumbai..." maxlength="25"/>
+    <button class="btn btn-primary" style="width:100%;font-size:16px;padding:16px;" onclick="finishOnboard()">
+      🚀 GharOS Shuru Karein
+    </button>
+    <div style="text-align:center;margin-top:14px;font-size:12px;color:var(--muted);">
+      ✅ No account needed &nbsp;·&nbsp; 🔒 Data sirf aapke phone mein
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     HOME SCREEN
+════════════════════════════════════════ -->
+<div class="screen" id="home" style="background:radial-gradient(ellipse at 20% 0%,#0d1840 0%,var(--bg) 65%);">
+  <div class="orb-fixed" style="position:fixed;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(79,159,255,.09) 0%,transparent 70%);top:-5%;right:-8%;pointer-events:none;animation:breatheBlur 5s ease-in-out infinite;z-index:0;"></div>
+  <div class="orb-fixed" style="position:fixed;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(155,126,255,.07) 0%,transparent 70%);bottom:18%;left:-8%;pointer-events:none;animation:breatheBlur 7s 2s ease-in-out infinite;z-index:0;"></div>
+
+  <div style="position:relative;z-index:1;flex:1;overflow-y:auto;scrollbar-width:none;" id="home-scroll">
+    <div class="pad">
+      <!-- Lang bar -->
+      <div id="lang-bar" style="padding:50px 0 0;margin-bottom:0;">
+        <button class="lang-btn on" onclick="setLang('hi')" id="lb-hi">HI</button>
+        <button class="lang-btn" onclick="setLang('en')" id="lb-en">EN</button>
+        <button class="lang-btn" onclick="setLang('mix')" id="lb-mix">MIX</button>
+      </div>
+
+      <!-- Header -->
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-top:14px;margin-bottom:22px;" class="fu">
+        <div>
+          <div style="font-size:13px;color:var(--muted);letter-spacing:.07em;margin-bottom:4px;" id="h-greet">Good Morning 🙏</div>
+          <div style="font-size:27px;font-weight:800;font-family:var(--fontD);line-height:1.15;" id="h-name">Sharma Parivaar</div>
+          <div style="font-size:12px;color:var(--sub);margin-top:3px;" id="h-city">Delhi</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:22px;font-weight:700;" class="glow-text" id="h-clock">--:--</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px;" id="h-date">--</div>
+          <div id="h-prem-badge" style="display:none;margin-top:6px;">
+            <span class="badge" style="background:rgba(255,215,0,.15);border:1px solid rgba(255,215,0,.4);color:#FFD700;font-size:10px;">👑 PREMIUM</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Premium CTA (free users) -->
+      <div id="prem-cta" class="mb20 fu" style="animation-delay:.05s;">
+        <div style="background:linear-gradient(135deg,rgba(155,126,255,.12),rgba(79,159,255,.08));border:1px solid rgba(155,126,255,.25);border-radius:20px;padding:16px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;" onclick="openPremium()">
+          <div style="font-size:28px;animation:iconBounce 2s ease-in-out infinite;">👑</div>
+          <div style="flex:1;">
+            <div style="font-weight:700;font-size:14px;" id="prem-cta-title">GharOS Premium – ₹15 sirf aaj!</div>
+            <div style="font-size:12px;color:var(--sub);margin-top:2px;" id="prem-cta-sub">Ads hatao · Sab features unlock · 29 din</div>
+          </div>
+          <div style="font-size:20px;">›</div>
+        </div>
+      </div>
+
+      <!-- Alerts -->
+      <div class="mb20 fu" style="animation-delay:.1s;">
+        <div class="section-label" id="lbl-alerts">Today's Alerts</div>
+        <div style="display:flex;flex-direction:column;gap:8px;" id="home-alerts"></div>
+      </div>
+
+      <!-- Feature Grid -->
+      <div class="fu" style="animation-delay:.15s;">
+        <div class="section-label" id="lbl-features">Features</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;" id="feature-grid"></div>
+      </div>
+
+      <!-- Stats row -->
+      <div class="mt20 mb20 fu" style="animation-delay:.4s;">
+        <div class="section-label" id="lbl-stats">Aaj Ka Summary</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;" id="home-stats"></div>
+      </div>
+
+      <!-- Guide button -->
+      <div class="mb20 fu" style="animation-delay:.45s;">
+        <div class="card tap" style="padding:14px 18px;display:flex;align-items:center;gap:14px;" onclick="openGuide()">
+          <span style="font-size:26px;">📘</span>
+          <div style="flex:1;">
+            <div style="font-weight:600;font-size:14px;" id="lbl-guide">App Guide & Help</div>
+            <div style="font-size:12px;color:var(--muted);">Step-by-step tutorial · Tips</div>
+          </div>
+          <span style="color:var(--muted);font-size:18px;">›</span>
+        </div>
+      </div>
+
+      <!-- Brand footer -->
+      <div style="text-align:center;padding:8px 0 0;">
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px;">
+          <div style="flex:1;height:1px;background:var(--border);"></div>
+          <span style="font-size:10px;color:var(--muted);letter-spacing:.14em;font-family:var(--fontD);">KUVEXO CORE</span>
+          <div style="flex:1;height:1px;background:var(--border);"></div>
+        </div>
+        <div style="font-size:10px;color:rgba(255,255,255,.1);margin-top:6px;" id="h-uid">ID: --</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     BILLS SCREEN
+════════════════════════════════════════ -->
+<div class="screen" id="bills" style="background:radial-gradient(ellipse at 20% 5%,#0d1840 0%,var(--bg) 65%);">
+  <div class="shdr">
+    <button class="back" onclick="goHome()">←</button>
+    <div class="sico" style="background:rgba(79,159,255,.14);border:1px solid rgba(79,159,255,.28);">💡</div>
+    <div><div style="font-size:19px;font-weight:800;font-family:var(--fontD);" id="lbl-bills-title">Bill Reminders</div><div class="fs12 clr-muted">GharOS</div></div>
+    <button style="margin-left:auto;background:none;border:none;color:var(--sub);font-size:22px;cursor:pointer;" onclick="openAnalytics()">📊</button>
+  </div>
+  <div class="scroll pad">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;" class="mb20">
+      <div class="card" style="padding:16px;box-shadow:0 0 22px rgba(79,159,255,.12);">
+        <div style="font-size:22px;font-weight:800;color:var(--blue);" id="bill-total">₹0</div>
+        <div class="fs12 clr-muted mt8" id="lbl-this-month">This Month</div>
+      </div>
+      <div class="card" style="padding:16px;box-shadow:0 0 22px rgba(251,146,60,.12);">
+        <div style="font-size:22px;font-weight:800;color:var(--orange);" id="bill-overdue">₹0</div>
+        <div class="fs12 clr-muted mt8" id="lbl-overdue">Overdue</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;" id="bills-list"></div>
+  </div>
+  <button class="fab" style="background:linear-gradient(135deg,#4F9FFF,#1d4ed8);box-shadow:0 0 22px rgba(79,159,255,.45),0 6px 20px rgba(0,0,0,.4);" onclick="openAdd('bill')">＋ Bill Add</button>
+</div>
+
+<!-- ════════════════════════════════════════
+     MEDICINE SCREEN
+════════════════════════════════════════ -->
+<div class="screen" id="medicine" style="background:radial-gradient(ellipse at 80% 10%,#0a2825 0%,var(--bg) 65%);">
+  <div class="shdr">
+    <button class="back" onclick="goHome()">←</button>
+    <div class="sico" style="background:rgba(45,212,191,.14);border:1px solid rgba(45,212,191,.28);">💊</div>
+    <div><div style="font-size:19px;font-weight:800;font-family:var(--fontD);" id="lbl-med-title">Medicine Reminder</div><div class="fs12 clr-muted">GharOS</div></div>
+  </div>
+  <div class="scroll pad">
+    <div class="card mb20" id="med-progress-card" style="padding:16px;background:linear-gradient(135deg,rgba(45,212,191,.1),rgba(45,212,191,.03));box-shadow:0 0 24px rgba(45,212,191,.13);"></div>
+    <div style="display:flex;flex-direction:column;gap:10px;" id="meds-list"></div>
+  </div>
+  <button class="fab" style="background:linear-gradient(135deg,#2DD4BF,#0f9e8f);box-shadow:0 0 22px rgba(45,212,191,.45),0 6px 20px rgba(0,0,0,.4);" onclick="openAdd('med')">＋ Medicine Add</button>
+</div>
+
+<!-- ════════════════════════════════════════
+     DOCUMENTS SCREEN (PREMIUM LOCKED)
+════════════════════════════════════════ -->
+<div class="screen" id="documents" style="background:radial-gradient(ellipse at 50% 5%,#160d32 0%,var(--bg) 65%);">
+  <div class="shdr">
+    <button class="back" onclick="goHome()">←</button>
+    <div class="sico" style="background:rgba(155,126,255,.14);border:1px solid rgba(155,126,255,.28);">📄</div>
+    <div><div style="font-size:19px;font-weight:800;font-family:var(--fontD);" id="lbl-doc-title">Document Alerts</div><div class="fs12 clr-muted">GharOS</div></div>
+    <span style="margin-left:auto;font-size:18px;">👑</span>
+  </div>
+  <div class="scroll pad">
+    <div id="docs-lock-banner"></div>
+    <div style="display:flex;flex-direction:column;gap:10px;" id="docs-list"></div>
+  </div>
+  <button class="fab" id="docs-fab" style="background:linear-gradient(135deg,#9B7EFF,#5b21b6);box-shadow:0 0 22px rgba(155,126,255,.45),0 6px 20px rgba(0,0,0,.4);display:none;" onclick="openAdd('doc')">＋ Document Add</button>
+</div>
+
+<!-- ════════════════════════════════════════
+     TASKS SCREEN
+════════════════════════════════════════ -->
+<div class="screen" id="tasks" style="background:radial-gradient(ellipse at 15% 80%,#041208 0%,var(--bg) 65%);">
+  <div class="shdr">
+    <button class="back" onclick="goHome()">←</button>
+    <div class="sico" style="background:rgba(74,222,128,.14);border:1px solid rgba(74,222,128,.28);">✅</div>
+    <div><div style="font-size:19px;font-weight:800;font-family:var(--fontD);" id="lbl-task-title">Family Tasks</div><div class="fs12 clr-muted">GharOS</div></div>
+  </div>
+  <div class="scroll pad">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;" class="mb20" id="task-stats"></div>
+    <div style="display:flex;flex-direction:column;gap:10px;" id="tasks-list"></div>
+  </div>
+  <button class="fab" style="background:linear-gradient(135deg,#4ADE80,#16a34a);box-shadow:0 0 22px rgba(74,222,128,.45),0 6px 20px rgba(0,0,0,.4);" onclick="openAdd('task')">＋ Task Add</button>
+</div>
+
+<!-- ════════════════════════════════════════
+     NEARBY SCREEN (PREMIUM LOCKED)
+════════════════════════════════════════ -->
+<div class="screen" id="nearby" style="background:radial-gradient(ellipse at 80% 20%,#1a0a02 0%,var(--bg) 65%);">
+  <div class="shdr">
+    <button class="back" onclick="goHome()">←</button>
+    <div class="sico" style="background:rgba(251,146,60,.14);border:1px solid rgba(251,146,60,.28);">📍</div>
+    <div><div style="font-size:19px;font-weight:800;font-family:var(--fontD);" id="lbl-near-title">Nearby Services</div><div class="fs12 clr-muted">GharOS</div></div>
+    <span style="margin-left:auto;font-size:18px;">👑</span>
+  </div>
+  <div class="scroll pad">
+    <div id="near-lock-banner"></div>
+    <div class="ftabs mb20" id="near-tabs" style="display:none;"></div>
+    <div style="display:flex;flex-direction:column;gap:10px;" id="nearby-list"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     GROCERY SCREEN
+════════════════════════════════════════ -->
+<div class="screen" id="grocery" style="background:radial-gradient(ellipse at 15% 85%,#1a0410 0%,var(--bg) 65%);">
+  <div class="shdr">
+    <button class="back" onclick="goHome()">←</button>
+    <div class="sico" style="background:rgba(244,114,182,.14);border:1px solid rgba(244,114,182,.28);">🛒</div>
+    <div><div style="font-size:19px;font-weight:800;font-family:var(--fontD);" id="lbl-groc-title">Grocery List</div><div class="fs12 clr-muted">GharOS</div></div>
+  </div>
+  <div class="scroll pad">
+    <div class="card mb20" id="groc-summary" style="padding:16px;background:linear-gradient(135deg,rgba(244,114,182,.1),rgba(244,114,182,.03));box-shadow:0 0 24px rgba(244,114,182,.12);"></div>
+    <div style="display:flex;flex-direction:column;gap:10px;" id="grocery-list"></div>
+  </div>
+  <button class="fab" style="background:linear-gradient(135deg,#F472B6,#be185d);box-shadow:0 0 22px rgba(244,114,182,.45),0 6px 20px rgba(0,0,0,.4);" onclick="openAdd('grocery')">＋ Item Add</button>
+</div>
+
+<!-- ════════════════════════════════════════
+     NOTICES SCREEN (PREMIUM LOCKED)
+════════════════════════════════════════ -->
+<div class="screen" id="notices" style="background:radial-gradient(ellipse at 70% 5%,#1a1100 0%,var(--bg) 65%);">
+  <div class="shdr">
+    <button class="back" onclick="goHome()">←</button>
+    <div class="sico" style="background:rgba(251,191,36,.14);border:1px solid rgba(251,191,36,.28);">📢</div>
+    <div><div style="font-size:19px;font-weight:800;font-family:var(--fontD);" id="lbl-notice-title">School Notices</div><div class="fs12 clr-muted">GharOS</div></div>
+    <span style="margin-left:auto;font-size:18px;">👑</span>
+  </div>
+  <div class="scroll pad">
+    <div id="notice-lock-banner"></div>
+    <div style="display:flex;flex-direction:column;gap:12px;" id="notices-list"></div>
+  </div>
+  <button class="fab" id="notice-fab" style="background:linear-gradient(135deg,#FBBF24,#d97706);box-shadow:0 0 22px rgba(251,191,36,.45),0 6px 20px rgba(0,0,0,.4);display:none;" onclick="openAdd('notice')">＋ Notice Add</button>
+</div>
+
+<!-- ════════════════════════════════════════
+     PREMIUM SCREEN
+════════════════════════════════════════ -->
+<div id="premium-overlay">
+  <div style="padding:50px 22px 40px;max-width:480px;margin:0 auto;width:100%;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;">
+      <button style="background:none;border:none;color:var(--sub);font-size:20px;cursor:pointer;" onclick="closePremium()">✕</button>
+      <span style="font-size:11px;color:var(--muted);letter-spacing:.1em;">KUVEXO CORE</span>
+    </div>
+
+    <!-- Hero -->
+    <div style="text-align:center;margin-bottom:32px;">
+      <div style="font-size:56px;margin-bottom:12px;animation:iconBounce 2s ease-in-out infinite;">👑</div>
+      <div style="font-family:var(--fontD);font-size:30px;font-weight:800;background:linear-gradient(135deg,#FFD700,#FFA500,#FFD700);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmerText 3s linear infinite;">GharOS Premium</div>
+      <div style="font-size:14px;color:var(--sub);margin-top:8px;">Sab kuch unlock karein · No ads · 29 din</div>
+    </div>
+
+    <!-- Pricing funnel -->
+    <div id="price-card" class="card mb20" style="padding:22px;border:1px solid rgba(255,215,0,.25);box-shadow:0 0 30px rgba(255,215,0,.1);text-align:center;">
+      <div id="price-badge" class="badge mb12" style="background:rgba(251,146,60,.2);border:1px solid rgba(251,146,60,.4);color:var(--orange);">⚡ LIMITED OFFER</div>
+      <div id="price-main" style="font-size:48px;font-weight:900;font-family:var(--fontD);" class="glow-text">₹15</div>
+      <div id="price-orig" style="font-size:14px;color:var(--muted);text-decoration:line-through;margin-top:2px;">₹39</div>
+      <div id="price-note" style="font-size:13px;color:var(--orange);margin-top:8px;font-weight:600;">⚠️ Sirf aaj · Kal ₹39 ho jayega</div>
+      <div id="price-timer" style="font-size:12px;color:var(--muted);margin-top:6px;"></div>
+    </div>
+
+    <!-- Features list -->
+    <div class="card mb20" style="padding:18px;">
+      <div class="section-label mb12">Premium mein kya milega</div>
+      <div id="prem-features-list" style="display:flex;flex-direction:column;gap:12px;"></div>
+    </div>
+
+    <!-- Payment -->
+    <div class="card mb16" style="padding:18px;">
+      <div class="section-label mb12">Payment Method</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="card tap" id="upi-option" onclick="selectPayment('upi')" style="padding:14px 16px;border:1px solid rgba(79,159,255,.25);">
+          <div class="row">
+            <span style="font-size:22px;">📱</span>
+            <div style="flex:1;">
+              <div style="font-weight:600;font-size:14px;">UPI Payment</div>
+              <div style="font-size:12px;color:var(--muted);">PhonePe · GPay · Paytm · BHIM</div>
+            </div>
+            <div id="upi-check" style="width:20px;height:20px;border-radius:50%;border:2px solid var(--blue);display:flex;align-items:center;justify-content:center;"><div style="width:10px;height:10px;border-radius:50%;background:var(--blue);"></div></div>
+          </div>
+        </div>
+        <div id="upi-detail" style="background:rgba(79,159,255,.07);border-radius:14px;padding:14px;text-align:center;">
+          <div style="font-size:13px;color:var(--sub);margin-bottom:8px;">UPI ID par payment karein:</div>
+          <div style="font-size:16px;font-weight:700;color:var(--blue);letter-spacing:.05em;">kuvexocore@upi</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:6px;">Screenshot leke WhatsApp karein</div>
+          <div style="font-size:12px;color:var(--sub);margin-top:4px;">📞 +91 98765 43210</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-gold" style="width:100%;font-size:16px;padding:17px;margin-bottom:12px;" onclick="activatePremium()">
+      👑 Premium Activate Karein
+    </button>
+    <button class="btn btn-outline" style="width:100%;padding:13px;" onclick="closePremium()">
+      Baad mein · Free continue karein
+    </button>
+    <div style="text-align:center;margin-top:14px;font-size:11px;color:var(--muted);">
+      🔒 Secure · No auto-renewal · Ek baar payment
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     GUIDE SCREEN
+════════════════════════════════════════ -->
+<div id="guide-overlay">
+  <div style="padding:50px 22px 40px;max-width:480px;margin:0 auto;width:100%;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+      <div style="font-family:var(--fontD);font-size:22px;font-weight:800;" class="glow-text">📘 App Guide</div>
+      <button style="background:none;border:none;color:var(--sub);font-size:20px;cursor:pointer;" onclick="closeGuide()">✕</button>
+    </div>
+    <div id="guide-content" style="display:flex;flex-direction:column;gap:14px;"></div>
+    <div class="mt20">
+      <button class="btn btn-primary" style="width:100%;padding:15px;" onclick="closeGuide()">✅ Samajh Gaya!</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     ADD / EDIT MODAL
+════════════════════════════════════════ -->
+<div class="overlay" id="add-overlay">
+  <div class="modal" id="add-modal">
+    <div class="modal-handle"></div>
+    <div style="font-family:var(--fontD);font-size:18px;font-weight:800;margin-bottom:20px;" id="add-title">Add Item</div>
+    <div id="add-fields" style="display:flex;flex-direction:column;gap:12px;"></div>
+    <div style="display:flex;gap:10px;margin-top:20px;">
+      <button class="btn btn-outline" style="flex:1;padding:13px;" onclick="closeAdd()">Cancel</button>
+      <button class="btn btn-primary" style="flex:2;padding:13px;" onclick="submitAdd()" id="add-submit-btn">Add</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     ANALYTICS MODAL
+════════════════════════════════════════ -->
+<div class="overlay center" id="analytics-overlay">
+  <div class="modal floating">
+    <div class="modal-handle"></div>
+    <div style="font-family:var(--fontD);font-size:18px;font-weight:800;margin-bottom:20px;">📊 Analytics</div>
+    <div id="analytics-content" style="display:flex;flex-direction:column;gap:10px;"></div>
+    <button class="btn btn-outline" style="width:100%;margin-top:18px;padding:12px;" onclick="document.getElementById('analytics-overlay').classList.remove('show')">Close</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     BACKUP / RESTORE MODAL
+════════════════════════════════════════ -->
+<div class="overlay center" id="backup-overlay">
+  <div class="modal floating">
+    <div class="modal-handle"></div>
+    <div style="font-family:var(--fontD);font-size:18px;font-weight:800;margin-bottom:20px;">💾 Backup & Restore</div>
+    <div id="backup-code-display" class="card" style="padding:14px;margin-bottom:16px;word-break:break-all;font-size:12px;color:var(--sub);font-family:monospace;max-height:120px;overflow-y:auto;"></div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <button class="btn btn-primary" style="padding:13px;" onclick="doBackup()">📤 Backup Code Copy Karein</button>
+      <input class="inp" id="restore-input" placeholder="Backup code paste karein..." style="font-family:monospace;font-size:12px;"/>
+      <button class="btn" style="background:linear-gradient(135deg,var(--teal),#0f9e8f);color:#fff;padding:13px;box-shadow:0 0 20px rgba(45,212,191,.3);" onclick="doRestore()">📥 Restore Karein</button>
+      <button class="btn btn-outline" style="padding:12px;" onclick="document.getElementById('backup-overlay').classList.remove('show')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     LOCK POPUP
+════════════════════════════════════════ -->
+<div class="overlay center" id="lock-overlay">
+  <div class="modal floating" style="text-align:center;">
+    <div class="modal-handle"></div>
+    <div style="font-size:48px;margin-bottom:16px;">🔒</div>
+    <div style="font-family:var(--fontD);font-size:20px;font-weight:800;margin-bottom:8px;">Premium Feature</div>
+    <div style="font-size:14px;color:var(--sub);margin-bottom:24px;">Yeh feature sirf Premium users ke liye hai.<br/>₹15 mein unlock karein!</div>
+    <button class="btn btn-gold" style="width:100%;padding:15px;margin-bottom:10px;" onclick="document.getElementById('lock-overlay').classList.remove('show');openPremium()">👑 ₹15 mein Unlock Karein</button>
+    <button class="btn btn-outline" style="width:100%;padding:12px;" onclick="document.getElementById('lock-overlay').classList.remove('show')">Baad Mein</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SETTINGS MODAL
+════════════════════════════════════════ -->
+<div class="overlay" id="settings-overlay">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div style="font-family:var(--fontD);font-size:18px;font-weight:800;margin-bottom:20px;">⚙️ Settings</div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div class="card tap" style="padding:14px 16px;" onclick="openBackup()">
+        <div class="row"><span style="font-size:20px;">💾</span><div style="flex:1;font-weight:600;font-size:14px;">Backup & Restore</div><span style="color:var(--muted);">›</span></div>
+      </div>
+      <div class="card tap" style="padding:14px 16px;" onclick="openPremium();document.getElementById('settings-overlay').classList.remove('show')">
+        <div class="row"><span style="font-size:20px;">👑</span><div style="flex:1;font-weight:600;font-size:14px;">Premium Upgrade</div><span style="color:var(--muted);">›</span></div>
+      </div>
+      <div class="card tap" style="padding:14px 16px;" onclick="openAnalytics();document.getElementById('settings-overlay').classList.remove('show')">
+        <div class="row"><span style="font-size:20px;">📊</span><div style="flex:1;font-weight:600;font-size:14px;">Usage Analytics</div><span style="color:var(--muted);">›</span></div>
+      </div>
+      <div class="card tap" style="padding:14px 16px;" onclick="resetApp()">
+        <div class="row"><span style="font-size:20px;">🗑️</span><div style="flex:1;font-weight:600;font-size:14px;color:var(--red);">App Reset</div><span style="color:var(--muted);">›</span></div>
+      </div>
+    </div>
+    <button class="btn btn-outline" style="width:100%;margin-top:16px;padding:13px;" onclick="document.getElementById('settings-overlay').classList.remove('show')">Close</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     AD ELEMENTS
+════════════════════════════════════════ -->
+<!-- App Open Ad -->
+<div id="ad-appopen">
+  <div style="position:absolute;top:48px;right:18px;display:flex;align-items:center;gap:8px;">
+    <span class="badge" style="background:rgba(255,255,255,.08);border:1px solid var(--border);color:var(--muted);">Ad</span>
+    <span id="ao-countdown" style="font-size:13px;color:var(--sub);font-weight:700;">5</span>
+    <button id="ao-skip" style="display:none;background:rgba(255,255,255,.1);border:1px solid var(--border);color:var(--text);padding:6px 14px;border-radius:99px;font-size:12px;cursor:pointer;font-family:var(--font);" onclick="closeAppOpenAd()">Skip ✕</button>
+  </div>
+  <div style="text-align:center;padding:28px;">
+    <div style="font-size:13px;color:var(--muted);letter-spacing:.1em;margin-bottom:20px;">ADVERTISEMENT</div>
+    <div style="background:linear-gradient(135deg,rgba(15,20,40,.9),rgba(8,12,28,.9));border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:32px 24px;max-width:380px;margin:0 auto;">
+      <div style="font-size:44px;margin-bottom:14px;">📱</div>
+      <div style="font-size:18px;font-weight:700;margin-bottom:8px;">GharOS Premium</div>
+      <div style="font-size:13px;color:var(--sub);margin-bottom:20px;">Ads hatao · Sab features unlock karein</div>
+      <button class="btn btn-gold" style="width:100%;padding:13px;" onclick="closeAppOpenAd();openPremium()">👑 Sirf ₹15 Mein</button>
+    </div>
+    <div style="font-size:11px;color:var(--muted);margin-top:16px;">Powered by AdMob · KUVEXO CORE</div>
+  </div>
+</div>
+
+<!-- Interstitial Ad -->
+<div id="ad-inter">
+  <div style="position:absolute;top:50px;right:18px;display:flex;align-items:center;gap:8px;">
+    <span class="badge" style="background:rgba(255,255,255,.08);border:1px solid var(--border);color:var(--muted);">Ad</span>
+    <button id="inter-skip" style="background:rgba(255,255,255,.1);border:1px solid var(--border);color:var(--text);padding:6px 14px;border-radius:99px;font-size:12px;cursor:pointer;font-family:var(--font);display:none;" onclick="closeInter()">Skip ✕</button>
+    <span id="inter-count" style="font-size:13px;color:var(--sub);font-weight:700;">5</span>
+  </div>
+  <div style="text-align:center;padding:28px;">
+    <div style="font-size:12px;color:var(--muted);letter-spacing:.1em;margin-bottom:20px;">ADVERTISEMENT</div>
+    <div style="background:rgba(15,20,40,.8);border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:28px 22px;max-width:360px;margin:0 auto;">
+      <div style="font-size:40px;margin-bottom:12px;">🎯</div>
+      <div style="font-size:16px;font-weight:700;margin-bottom:6px;">Sponsored</div>
+      <div style="font-size:13px;color:var(--sub);margin-bottom:18px;">Premium experience ke liye upgrade karein</div>
+      <button class="btn btn-primary" style="width:100%;padding:12px;" onclick="closeInter();openPremium()">Learn More</button>
+    </div>
+  </div>
+</div>
+
+<!-- Banner Ad (home screen) -->
+<div id="ad-banner" class="card">
+  <span class="ad-label">Ad</span>
+  <div style="flex:1;">
+    <div style="font-size:13px;font-weight:600;">🌟 GharOS Premium – ₹15 only!</div>
+    <div style="font-size:11px;color:var(--muted);">Remove ads · Unlock all features</div>
+  </div>
+  <button style="background:linear-gradient(135deg,var(--blue),var(--blueDark));border:none;border-radius:10px;padding:6px 12px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font);" onclick="openPremium()">Upgrade</button>
+  <button class="ad-close" onclick="document.getElementById('ad-banner').classList.remove('show')">✕</button>
+</div>
+
+<!-- Bottom Nav -->
+<div id="bnav">
+  <button class="nb" id="nb-home" onclick="showScreen('home')"><span class="nb-icon">🏠</span><span class="nb-label on">Home</span><div class="nb-dot"></div></button>
+  <button class="nb" id="nb-tasks" onclick="showScreen('tasks')"><span class="nb-icon">✅</span><span class="nb-label">Tasks</span></button>
+  <button class="nb" id="nb-grocery" onclick="showScreen('grocery')"><span class="nb-icon">🛒</span><span class="nb-label">Grocery</span></button>
+  <button class="nb" id="nb-nearby" onclick="showScreen('nearby')"><span class="nb-icon">📍</span><span class="nb-label">Nearby</span></button>
+  <button class="nb" id="nb-settings" onclick="document.getElementById('settings-overlay').classList.add('show')"><span class="nb-icon">⚙️</span><span class="nb-label">Settings</span></button>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<!-- Watermark -->
+<div id="wm">GharOS by KUVEXO CORE</div>
+
+<!-- Undo Bar -->
+<div id="undo-bar">
+  <span style="font-size:20px;">🗑️</span>
+  <span style="font-size:13px;color:var(--sub);flex:1;" id="undo-msg">Item deleted</span>
+  <button style="background:rgba(79,159,255,.2);border:1px solid rgba(79,159,255,.35);color:var(--blue);padding:6px 14px;border-radius:99px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font);" onclick="doUndo()">Undo</button>
+<script>
+'use strict';
+// ══════════════════════════════════════════════════════
+//  GHAROS v2.0 – Full App Logic
+//  © KUVEXO CORE | Hidden Signature: KXOS-2025-v2-HC
+// ══════════════════════════════════════════════════════
+
+/* ── HIDDEN CODE SIGNATURE ── */
+console.log('%cGharOS v2.0 by KUVEXO CORE','color:#9B7EFF;font-weight:bold;font-size:14px;');
+console.log('%cHidden Signature: KXOS-2025-v2-HC','color:#475569;font-size:11px;');
+
+// ══════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════
+const S = {
+  user: { name:'Sharma Parivaar', city:'Delhi', id:'' },
+  isPremium: false,
+  premiumExpiry: null,
+  lang: 'hi',
+  clickCount: 0,
+  sessionAdShown: false,
+  analytics: { opens:0, featureClicks:{}, premiumClicks:0 },
+  pricingStage: 1, // 1=₹15, 2=₹39+trial, 3=₹39
+  pricingTimer: null,
+  undoStack: null,
+  undoTimer: null,
+  editMode: false,
+  editId: null,
+  addType: null,
+  nearCat: 'All',
+};
+
+// ── DEFAULT DATA ──
+const DEFAULT_BILLS = [
+  {id:1,name:"Electricity",amount:1240,due:"Apr 08",status:"due",icon:"⚡",paid:false},
+  {id:2,name:"Gas Cylinder",amount:950,due:"Apr 15",status:"upcoming",icon:"🔥",paid:false},
+  {id:3,name:"Internet",amount:699,due:"Apr 20",status:"ok",icon:"📶",paid:true},
+  {id:4,name:"Water Tax",amount:320,due:"May 01",status:"ok",icon:"💧",paid:true},
+  {id:5,name:"Mobile Recharge",amount:599,due:"Apr 12",status:"upcoming",icon:"📱",paid:false},
+];
+const DEFAULT_MEDS = [
+  {id:1,name:"Metformin 500mg",person:"Papa",time:"8:00 AM",taken:true,icon:"💊"},
+  {id:2,name:"Amlodipine 5mg",person:"Papa",time:"8:00 PM",taken:false,icon:"💊"},
+  {id:3,name:"Vitamin D3",person:"Mummy",time:"9:00 AM",taken:true,icon:"🌞"},
+  {id:4,name:"Thyronorm 50mcg",person:"Mummy",time:"7:00 AM",taken:true,icon:"💊"},
+  {id:5,name:"Calcium Tablet",person:"Dadi",time:"1:00 PM",taken:false,icon:"🦴"},
+];
+const DEFAULT_DOCS = [
+  {id:1,name:"Aadhaar Card",person:"All",expiry:"N/A",days:null,icon:"🪪",s:"ok"},
+  {id:2,name:"Passport",person:"Rahul",expiry:"Jun 2025",days:12,icon:"📔",s:"critical"},
+  {id:3,name:"Car Insurance",person:"Family",expiry:"Jul 2025",days:45,icon:"🚗",s:"warn"},
+  {id:4,name:"PAN Card",person:"Papa",expiry:"N/A",days:null,icon:"💳",s:"ok"},
+  {id:5,name:"School TC",person:"Priya",expiry:"Mar 2026",days:365,icon:"🎓",s:"ok"},
+];
+const DEFAULT_TASKS = [
+  {id:1,text:"Bathroom tap fix karana",person:"Papa",done:false,pri:"high"},
+  {id:2,text:"Sabji lani hai market se",person:"Mummy",done:false,pri:"medium"},
+  {id:3,text:"School fee jama karni hai",person:"Priya",done:true,pri:"high"},
+  {id:4,text:"LPG refill book karein",person:"Mummy",done:true,pri:"low"},
+  {id:5,text:"Aadhaar card lene jana hai",person:"Rahul",done:false,pri:"low"},
+];
+const DEFAULT_NEARBY = [
+  {id:1,name:"Ramesh Plumbing",cat:"Plumber",rating:4.8,dist:"0.3 km",phone:"98765 43210",icon:"🔧",avail:true},
+  {id:2,name:"Suresh Electric Works",cat:"Electrician",rating:4.6,dist:"0.7 km",phone:"87654 32109",icon:"⚡",avail:true},
+  {id:3,name:"Singh Auto Repair",cat:"Mechanic",rating:4.5,dist:"1.1 km",phone:"76543 21098",icon:"🔩",avail:false},
+  {id:4,name:"Kumar Plumber",cat:"Plumber",rating:4.3,dist:"1.4 km",phone:"65432 10987",icon:"🔧",avail:true},
+  {id:5,name:"Dr. Sharma Clinic",cat:"Doctor",rating:4.9,dist:"0.5 km",phone:"54321 09876",icon:"🩺",avail:true},
+  {id:6,name:"Gopal Carpenter",cat:"Carpenter",rating:4.4,dist:"2.0 km",phone:"43210 98765",icon:"🪚",avail:false},
+];
+const DEFAULT_GROCERY = [
+  {id:1,name:"आलू (Potatoes)",qty:"1 kg",done:false},
+  {id:2,name:"टमाटर (Tomatoes)",qty:"500 g",done:false},
+  {id:3,name:"दूध (Milk)",qty:"2 L",done:true},
+  {id:4,name:"बासमती चावल (Rice)",qty:"5 kg",done:false},
+  {id:5,name:"अरहर दाल (Dal)",qty:"1 kg",done:false},
+  {id:6,name:"हल्दी (Turmeric)",qty:"200 g",done:true},
+  {id:7,name:"Bread",qty:"1 pack",done:false},
+];
+const DEFAULT_NOTICES = [
+  {id:1,title:"Annual Sports Day",school:"DPS Noida",date:"Apr 10",tag:"Event",icon:"🏆",c:"#FBBF24"},
+  {id:2,title:"Fee Payment Deadline",school:"DPS Noida",date:"Apr 08",tag:"Urgent",icon:"💰",c:"#FB923C"},
+  {id:3,title:"Parent-Teacher Meeting",school:"St. Mary's",date:"Apr 15",tag:"Meeting",icon:"👩‍🏫",c:"#4F9FFF"},
+  {id:4,title:"Holiday – Ram Navami",school:"All Schools",date:"Apr 17",tag:"Holiday",icon:"🎉",c:"#2DD4BF"},
+  {id:5,title:"Summer Vacation Starts",school:"All Schools",date:"May 15",tag:"Holiday",icon:"🌞",c:"#4ADE80"},
+];
+
+// DB (localStorage)
+let DB = { bills:[], meds:[], docs:[], tasks:[], nearby:[], grocery:[], notices:[] };
+
+// ══════════════════════════════════════════
+//  STORAGE
+// ══════════════════════════════════════════
+function save(key, val){ try{ localStorage.setItem('gharos_'+key, JSON.stringify(val)); }catch(e){} }
+function load(key, def){ try{ const v=localStorage.getItem('gharos_'+key); return v?JSON.parse(v):def; }catch(e){return def;} }
+function saveAll(){ save('db',DB); save('state',{user:S.user,isPremium:S.isPremium,premiumExpiry:S.premiumExpiry,lang:S.lang,analytics:S.analytics,pricingStage:S.pricingStage}); }
+function loadAll(){
+  DB = load('db', null) || { bills:[...DEFAULT_BILLS], meds:[...DEFAULT_MEDS], docs:[...DEFAULT_DOCS], tasks:[...DEFAULT_TASKS], nearby:[...DEFAULT_NEARBY], grocery:[...DEFAULT_GROCERY], notices:[...DEFAULT_NOTICES] };
+  const st = load('state', null);
+  if(st){ Object.assign(S, st); }
+}
+
+// ══════════════════════════════════════════
+//  LANGUAGE SYSTEM
+// ══════════════════════════════════════════
+const LANGS = {
+  hi: {
+    greet_morning:'शुभ प्रभात 🙏', greet_afternoon:'नमस्ते ☀️', greet_evening:'शुभ संध्या 🌙',
+    alerts:'आज के अलर्ट', features:'सुविधाएं', stats:'आज का सारांश',
+    bills:'बिल रिमाइंडर', medicine:'दवाई रिमाइंडर', documents:'दस्तावेज़ अलर्ट',
+    tasks:'पारिवारिक कार्य', nearby:'नज़दीकी सेवाएं', grocery:'किराने की सूची', notices:'स्कूल नोटिस',
+    guide:'ऐप गाइड और सहायता', this_month:'इस महीने', overdue:'बकाया',
+    prem_cta:'GharOS Premium – आज सिर्फ ₹15!', prem_sub:'विज्ञापन हटाएं · सब features unlock · 29 दिन',
+  },
+  en: {
+    greet_morning:'Good Morning 🙏', greet_afternoon:'Good Afternoon ☀️', greet_evening:'Good Evening 🌙',
+    alerts:"Today's Alerts", features:'Features', stats:"Today's Summary",
+    bills:'Bill Reminders', medicine:'Medicine Reminder', documents:'Document Alerts',
+    tasks:'Family Tasks', nearby:'Nearby Services', grocery:'Grocery List', notices:'School Notices',
+    guide:'App Guide & Help', this_month:'This Month', overdue:'Overdue',
+    prem_cta:'GharOS Premium – Only ₹15 Today!', prem_sub:'Remove ads · Unlock all features · 29 days',
+  },
+  mix: {
+    greet_morning:'Good Morning 🙏', greet_afternoon:'Namaste ☀️', greet_evening:'Good Evening 🌙',
+    alerts:"Aaj ke Alerts", features:'Features', stats:"Aaj ka Summary",
+    bills:'Bill Reminders', medicine:'Medicine Reminder', documents:'Document Alerts',
+    tasks:'Family Tasks', nearby:'Nearby Services', grocery:'Grocery List', notices:'School Notices',
+    guide:'App Guide & Help', this_month:'Is Mahine', overdue:'Overdue',
+    prem_cta:'GharOS Premium – Sirf ₹15 Aaj!', prem_sub:'Ads hatao · Sab features unlock · 29 din',
+  }
+};
+function t(key){ return (LANGS[S.lang]||LANGS.hi)[key]||key; }
+function setLang(l){
+  S.lang=l;
+  ['hi','en','mix'].forEach(x=>{ document.getElementById('lb-'+x)?.classList.toggle('on',x===l); });
+  updateLabels();
+  saveAll();
+}
+function updateLabels(){
+  const set=(id,val)=>{ const el=document.getElementById(id); if(el)el.textContent=val; };
+  set('lbl-alerts',t('alerts')); set('lbl-features',t('features')); set('lbl-stats',t('stats'));
+  set('lbl-bills-title',t('bills')); set('lbl-med-title',t('medicine'));
+  set('lbl-doc-title',t('documents')); set('lbl-task-title',t('tasks'));
+  set('lbl-near-title',t('nearby')); set('lbl-groc-title',t('grocery'));
+  set('lbl-notice-title',t('notices')); set('lbl-guide',t('guide'));
+  set('lbl-this-month',t('this_month')); set('lbl-overdue',t('overdue'));
+  set('prem-cta-title',t('prem_cta')); set('prem-cta-sub',t('prem_sub'));
+}
+
+// ══════════════════════════════════════════
+//  HELPERS
+// ══════════════════════════════════════════
+function uid(){ return 'KXOS-'+Math.random().toString(36).substr(2,8).toUpperCase(); }
+function badge(color,text){ return `<span class="badge" style="background:${color}20;border:1px solid ${color}40;color:${color};">${text}</span>`; }
+let toastTimer;
+function toast(msg, dur=2200){
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>el.classList.remove('show'),dur);
+}
+function nextId(arr){ return arr.length ? Math.max(...arr.map(x=>x.id))+1 : 1; }
+
+// ══════════════════════════════════════════
+//  ANALYTICS
+// ══════════════════════════════════════════
+function trackOpen(){ S.analytics.opens++; saveAll(); }
+function trackClick(feat){
+  S.analytics.featureClicks[feat]=(S.analytics.featureClicks[feat]||0)+1;
+  S.clickCount++;
+  saveAll();
+}
+function trackPremiumClick(){ S.analytics.premiumClicks++; saveAll(); }
+function openAnalytics(){
+  const a=S.analytics;
+  const totalClicks=Object.values(a.featureClicks).reduce((s,v)=>s+v,0);
+  const topFeat=Object.entries(a.featureClicks).sort((a,b)=>b[1]-a[1])[0];
+  document.getElementById('analytics-content').innerHTML=`
+    <div class="card" style="padding:14px;"><div style="font-size:11px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;">Usage Stats</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        ${[
+          ['📱','App Opens',a.opens],
+          ['👆','Total Feature Clicks',totalClicks],
+          ['👑','Premium Page Visits',a.premiumClicks],
+          ['🏆','Most Used',topFeat?topFeat[0]+' ('+topFeat[1]+'x)':'None yet'],
+        ].map(([ic,lb,vl])=>`
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:18px;">${ic}</span>
+            <div style="flex:1;font-size:13px;color:var(--sub);">${lb}</div>
+            <div style="font-weight:700;font-size:14px;">${vl||0}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+    <div class="card" style="padding:14px;">
+      <div style="font-size:11px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;">Feature Clicks</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        ${Object.entries(a.featureClicks).length ? Object.entries(a.featureClicks).map(([f,c])=>`
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="flex:1;font-size:13px;color:var(--sub);">${f}</div>
+            <div style="height:6px;border-radius:99px;background:var(--blue);width:${Math.min(c*10,120)}px;"></div>
+            <div style="font-size:13px;font-weight:700;">${c}</div>
+          </div>`).join('') : '<div style="font-size:13px;color:var(--muted);">Koi data nahi abhi</div>'}
+      </div>
+    </div>`;
+  document.getElementById('analytics-overlay').classList.add('show');
+}
+
+// ══════════════════════════════════════════
+//  PREMIUM SYSTEM
+// ══════════════════════════════════════════
+function checkPremium(){
+  if(S.isPremium && S.premiumExpiry && Date.now() > S.premiumExpiry){
+    S.isPremium=false; S.premiumExpiry=null; saveAll();
+    toast('⏰ Premium expired. Renew karein!');
+  }
+}
+function openPremium(){
+  trackPremiumClick();
+  const now=Date.now();
+  // Pricing stage logic
+  const firstOpen = load('first_open',null) || now;
+  if(!load('first_open',null)) save('first_open',now);
+  const age=(now-firstOpen)/3600000; // hours
+  if(age<24) S.pricingStage=1;
+  else if(age<96) S.pricingStage=2;
+  else S.pricingStage=3;
+
+  updatePriceUI();
+  document.getElementById('premium-overlay').classList.add('show');
+  // Features list
+  const feats=[
+    ['🔒 Ads completely removed','Free mein ads dikhte hain'],
+    ['📄 Document Alerts unlock','All documents track karein'],
+    ['📍 Nearby Services unlock','Local services dhundein'],
+    ['📢 School Notices unlock','Sab notices store karein'],
+    ['✏️ Unlimited edits','Data edit/delete karein'],
+    ['💾 Backup & Restore','Data secure rakhen'],
+    ['👑 Premium badge','Profile mein dikhega'],
+  ];
+  document.getElementById('prem-features-list').innerHTML=feats.map(([t,s])=>`
+    <div style="display:flex;gap:12px;align-items:flex-start;">
+      <span style="font-size:16px;flex-shrink:0;">${t.split(' ')[0]}</span>
+      <div>
+        <div style="font-size:14px;font-weight:600;">${t.slice(t.indexOf(' ')+1)}</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px;">${s}</div>
+      </div>
+      <span style="margin-left:auto;color:var(--green);font-size:16px;">✓</span>
+    </div>`).join('<div class="divider"></div>');
+}
+function updatePriceUI(){
+  const prices={ 1:{main:'₹15',orig:'₹39',note:'⚠️ Sirf aaj · Kal ₹39 ho jayega',badge:'⚡ LAST CHANCE'}, 2:{main:'₹39',orig:'',note:'✨ 7 din free trial included',badge:'🎁 FREE TRIAL'}, 3:{main:'₹39',orig:'',note:'Best family app India mein',badge:'⭐ POPULAR'} };
+  const p=prices[S.pricingStage]||prices[3];
+  document.getElementById('price-main').textContent=p.main;
+  document.getElementById('price-orig').textContent=p.orig;
+  document.getElementById('price-note').textContent=p.note;
+  document.getElementById('price-badge').textContent=p.badge;
+  if(S.pricingStage===1){
+    startPriceTimer();
+  }
+}
+function startPriceTimer(){
+  clearInterval(S.pricingTimer);
+  const target=new Date(); target.setHours(23,59,59,0);
+  const tick=()=>{
+    const left=target-Date.now();
+    if(left<=0){document.getElementById('price-timer').textContent='Offer expired!';clearInterval(S.pricingTimer);return;}
+    const h=Math.floor(left/3600000), m=Math.floor((left%3600000)/60000), s=Math.floor((left%60000)/1000);
+    document.getElementById('price-timer').textContent=`Offer expires in: ${h}h ${m}m ${s}s`;
+  };
+  tick();
+  S.pricingTimer=setInterval(tick,1000);
+}
+function closePremium(){ document.getElementById('premium-overlay').classList.remove('show'); clearInterval(S.pricingTimer); }
+function activatePremium(){
+  S.isPremium=true;
+  S.premiumExpiry = S.pricingStage===2 ? Date.now()+(29+7)*86400000 : Date.now()+29*86400000;
+  saveAll(); closePremium();
+  toast('👑 Premium Activated! Welcome to GharOS Premium!');
+  updateHomeUI();
+  renderAll();
+}
+function selectPayment(type){
+  document.getElementById('upi-detail').style.display = type==='upi' ? 'block' : 'none';
+}
+
+// ══════════════════════════════════════════
+//  AD SYSTEM
+// ══════════════════════════════════════════
+function showAppOpenAd(){
+  if(S.isPremium || S.sessionAdShown) return;
+  S.sessionAdShown=true;
+  const el=document.getElementById('ad-appopen');
+  el.classList.add('show');
+  let c=5;
+  document.getElementById('ao-countdown').textContent=c;
+  const iv=setInterval(()=>{
+    c--;
+    document.getElementById('ao-countdown').textContent=c;
+    if(c<=0){ clearInterval(iv); document.getElementById('ao-skip').style.display='flex'; document.getElementById('ao-countdown').style.display='none'; }
+  },1000);
+}
+function closeAppOpenAd(){ document.getElementById('ad-appopen').classList.remove('show'); }
+
+let interPending=null;
+function maybeShowInter(cb){
+  if(S.isPremium){ cb&&cb(); return; }
+  if(S.clickCount%3!==0){ cb&&cb(); return; }
+  interPending=cb;
+  const el=document.getElementById('ad-inter');
+  el.classList.add('show');
+  document.getElementById('inter-skip').style.display='none';
+  document.getElementById('inter-count').style.display='inline';
+  let c=4;
+  document.getElementById('inter-count').textContent=c;
+  const iv=setInterval(()=>{
+    c--;
+    document.getElementById('inter-count').textContent=c;
+    if(c<=0){ clearInterval(iv); document.getElementById('inter-skip').style.display='flex'; document.getElementById('inter-count').style.display='none'; }
+  },1000);
+}
+function closeInter(){
+  document.getElementById('ad-inter').classList.remove('show');
+  if(interPending){ interPending(); interPending=null; }
+}
+
+function showBannerAd(){
+  if(S.isPremium) return;
+  setTimeout(()=>document.getElementById('ad-banner').classList.add('show'), 1500);
+}
+function hideBannerAd(){ document.getElementById('ad-banner').classList.remove('show'); }
+
+// ══════════════════════════════════════════
+//  UNDO SYSTEM
+// ══════════════════════════════════════════
+function showUndo(msg, undoFn){
+  clearTimeout(S.undoTimer);
+  S.undoStack=undoFn;
+  document.getElementById('undo-msg').textContent=msg;
+  const bar=document.getElementById('undo-bar');
+  bar.classList.add('show');
+  const prog=document.getElementById('undo-progress');
+  prog.style.animation='none'; prog.offsetHeight; // reflow
+  prog.style.animation='undoBar 5s linear forwards';
+  S.undoTimer=setTimeout(()=>{ bar.classList.remove('show'); S.undoStack=null; },5000);
+}
+function doUndo(){
+  if(S.undoStack){ S.undoStack(); toast('↩ Undo kiya gaya!'); }
+  document.getElementById('undo-bar').classList.remove('show');
+  clearTimeout(S.undoTimer); S.undoStack=null;
+}
+
+// ══════════════════════════════════════════
+//  LOCK SYSTEM
+// ══════════════════════════════════════════
+const LOCKED_FEATURES=['documents','nearby','notices'];
+function isLocked(feat){ return !S.isPremium && LOCKED_FEATURES.includes(feat); }
+function showLockPopup(){ document.getElementById('lock-overlay').classList.add('show'); }
+function renderLockBanner(containerId){
+  const el=document.getElementById(containerId);
+  if(!el) return;
+  el.innerHTML=`
+    <div class="lock-banner">
+      <div style="font-size:36px;margin-bottom:10px;">🔒</div>
+      <div style="font-weight:700;font-size:16px;margin-bottom:6px;">Premium Feature</div>
+      <div style="font-size:13px;color:var(--sub);margin-bottom:16px;">Yeh feature sirf Premium users ke liye unlock hoga</div>
+      <button class="btn btn-gold" style="margin:0 auto;" onclick="openPremium()">👑 ₹15 mein Unlock Karein</button>
+    </div>`;
+}
+
+// ══════════════════════════════════════════
+//  NAVIGATION
+// ══════════════════════════════════════════
+const NAV_IDS=['home','tasks','grocery','nearby'];
+let curScreen='splash';
+
+function showScreen(id, skipAd=false){
+  trackClick(id);
+  const go=()=>{
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById(id)?.classList.add('active');
+    curScreen=id;
+    // Nav
+    const bnav=document.getElementById('bnav');
+    if(NAV_IDS.includes(id)||id==='tasks'||id==='grocery'||id==='nearby'){
+      bnav.style.display='flex';
+    } else { bnav.style.display='none'; }
+    // Update nav dots
+    ['home','tasks','grocery','nearby','settings'].forEach(n=>{
+      const btn=document.getElementById('nb-'+n);
+      if(!btn) return;
+      const lbl=btn.querySelector('.nb-label');
+      const dot=btn.querySelector('.nb-dot');
+      if(n===id){ lbl?.classList.add('on'); if(!dot){const d=document.createElement('div');d.className='nb-dot';btn.appendChild(d);} }
+      else{ lbl?.classList.remove('on'); dot?.remove(); }
+    });
+    // Hide/show banner ad
+    if(id==='home') showBannerAd(); else hideBannerAd();
+    // Scroll top
+    document.getElementById(id)?.querySelector('.scroll')?.scrollTo(0,0);
+    // Render
+    renderScreen(id);
+  };
+  if(!skipAd) maybeShowInter(go); else go();
+}
+
+function goHome(){ showScreen('home', true); }
+
+function renderScreen(id){
+  if(id==='home') renderHome();
+  else if(id==='bills') renderBills();
+  else if(id==='medicine') renderMeds();
+  else if(id==='documents') renderDocs();
+  else if(id==='tasks') renderTasks();
+  else if(id==='nearby') renderNearby();
+  else if(id==='grocery') renderGrocery();
+  else if(id==='notices') renderNotices();
+}
+function renderAll(){ renderScreen(curScreen); renderHome(); }
+
+// ══════════════════════════════════════════
+//  HOME RENDER
+// ══════════════════════════════════════════
+function renderHome(){
+  updateHomeTime();
+  updateHomeUI();
+  renderHomeAlerts();
+  renderFeatureGrid();
+  renderHomeStats();
+  updateLabels();
+}
+function updateHomeTime(){
+  const now=new Date();
+  const h=now.getHours();
+  const greetKey= h<12?'greet_morning':h<17?'greet_afternoon':'greet_evening';
+  const el=id=>document.getElementById(id);
+  if(el('h-greet')) el('h-greet').textContent=t(greetKey);
+  if(el('h-name')) el('h-name').textContent=S.user.name;
+  if(el('h-city')) el('h-city').textContent=S.user.city||'India';
+  if(el('h-clock')) el('h-clock').textContent=now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true});
+  if(el('h-date')) el('h-date').textContent=now.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+  if(el('h-uid')) el('h-uid').textContent='ID: '+S.user.id;
+}
+function updateHomeUI(){
+  const isPrem=S.isPremium;
+  const cta=document.getElementById('prem-cta');
+  const badge=document.getElementById('h-prem-badge');
+  if(cta) cta.style.display=isPrem?'none':'block';
+  if(badge) badge.style.display=isPrem?'block':'none';
+  // Update lang buttons
+  ['hi','en','mix'].forEach(x=>document.getElementById('lb-'+x)?.classList.toggle('on',S.lang===x));
+}
+function renderHomeAlerts(){
+  const c=document.getElementById('home-alerts');
+  if(!c) return;
+  const alerts=[];
+  DB.bills.filter(b=>!b.paid&&b.status!=='ok').slice(0,1).forEach(b=>alerts.push({icon:'💡',text:b.name+' – '+b.due+' tak',color:'var(--blue)'}));
+  DB.meds.filter(m=>!m.taken).slice(0,1).forEach(m=>alerts.push({icon:'💊',text:m.person+' – '+m.name+' – '+m.time,color:'var(--teal)'}));
+  DB.docs.filter(d=>d.s==='critical').slice(0,1).forEach(d=>alerts.push({icon:'📄',text:d.name+' – '+d.days+' din baaki',color:'var(--orange)'}));
+  if(!alerts.length) alerts.push({icon:'✅',text:'Koi urgent alert nahi aaj!',color:'var(--green)'});
+  c.innerHTML=alerts.map(a=>`
+    <div class="card fu" style="padding:12px 15px;box-shadow:0 0 20px ${a.color}18,0 6px 20px rgba(0,0,0,.35);">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:36px;height:36px;border-radius:12px;background:${a.color}14;border:1px solid ${a.color}28;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;">${a.icon}</div>
+        <span style="font-size:13px;color:var(--sub);line-height:1.4;flex:1;">${a.text}</span>
+        <div style="width:6px;height:6px;border-radius:50%;background:${a.color};box-shadow:0 0 6px ${a.color};flex-shrink:0;animation:breathe 2s ease-in-out infinite;"></div>
+      </div>
+    </div>`).join('');
+}
+function renderFeatureGrid(){
+  const c=document.getElementById('feature-grid');
+  if(!c) return;
+  const feats=[
+    {id:'bills',icon:'💡',label:t('bills'),bg:'linear-gradient(135deg,#1a3a6e,#0d1f3c)',bc:'rgba(79,159,255,.22)',glow:'rgba(79,159,255,.18)',ac:'#4F9FFF',locked:false},
+    {id:'medicine',icon:'💊',label:t('medicine'),bg:'linear-gradient(135deg,#0f3a38,#071e1d)',bc:'rgba(45,212,191,.22)',glow:'rgba(45,212,191,.18)',ac:'#2DD4BF',locked:false},
+    {id:'documents',icon:'📄',label:t('documents'),bg:'linear-gradient(135deg,#2e1b5e,#160d32)',bc:'rgba(155,126,255,.22)',glow:'rgba(155,126,255,.18)',ac:'#9B7EFF',locked:isLocked('documents')},
+    {id:'tasks',icon:'✅',label:t('tasks'),bg:'linear-gradient(135deg,#0f3a1e,#051508)',bc:'rgba(74,222,128,.22)',glow:'rgba(74,222,128,.18)',ac:'#4ADE80',locked:false},
+    {id:'nearby',icon:'📍',label:t('nearby'),bg:'linear-gradient(135deg,#3d1f0d,#1a0c05)',bc:'rgba(251,146,60,.22)',glow:'rgba(251,146,60,.18)',ac:'#FB923C',locked:isLocked('nearby')},
+    {id:'grocery',icon:'🛒',label:t('grocery'),bg:'linear-gradient(135deg,#3d0d24,#1a0510)',bc:'rgba(244,114,182,.22)',glow:'rgba(244,114,182,.18)',ac:'#F472B6',locked:false},
+    {id:'notices',icon:'📢',label:t('notices'),bg:'linear-gradient(135deg,#3d2e0d,#1a1305)',bc:'rgba(251,191,36,.22)',glow:'rgba(251,191,36,.18)',ac:'#FBBF24',locked:isLocked('notices')},
+  ];
+  c.innerHTML=feats.map((f,i)=>`
+    <div class="card tap" onclick="handleFeatureClick('${f.id}')"
+      style="padding:20px 16px;background:${f.bg};border-color:${f.bc};box-shadow:0 0 22px ${f.glow},0 6px 22px rgba(0,0,0,.5);position:relative;overflow:hidden;opacity:0;animation:fadeUp .4s ${.08*i+.2}s ease forwards;">
+      <div style="position:absolute;top:-18px;right:-18px;width:72px;height:72px;border-radius:50%;background:radial-gradient(circle,${f.ac}28 0%,transparent 70%);pointer-events:none;"></div>
+      <div style="font-size:30px;margin-bottom:8px;">${f.locked?'🔒':f.icon}</div>
+      <div style="font-size:13px;font-weight:700;color:#fff;line-height:1.3;">${f.label}</div>
+      <div style="margin-top:7px;width:20px;height:2px;border-radius:99px;background:linear-gradient(90deg,${f.ac},transparent);"></div>
+      ${f.locked?`<div style="position:absolute;top:10px;right:10px;font-size:10px;padding:2px 7px;border-radius:99px;background:rgba(255,215,0,.15);border:1px solid rgba(255,215,0,.35);color:#FFD700;">PRO</div>`:''}
+    </div>`).join('');
+}
+function handleFeatureClick(id){
+  if(isLocked(id)){ showLockPopup(); return; }
+  showScreen(id);
+}
+function renderHomeStats(){
+  const c=document.getElementById('home-stats');
+  if(!c) return;
+  const pendingTasks=DB.tasks.filter(t=>!t.done).length;
+  const pendingBills=DB.bills.filter(b=>!b.paid).length;
+  const pendingMeds=DB.meds.filter(m=>!m.taken).length;
+  c.innerHTML=[
+    {icon:'📋',val:pendingTasks,lbl:'Tasks',color:'var(--green)'},
+    {icon:'💡',val:pendingBills,lbl:'Bills',color:'var(--blue)'},
+    {icon:'💊',val:pendingMeds,lbl:'Meds',color:'var(--teal)'},
+  ].map(s=>`
+    <div class="card" style="padding:12px;text-align:center;box-shadow:0 0 16px ${s.color}14;">
+      <div style="font-size:22px;font-weight:800;color:${s.color};">${s.val}</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:3px;">${s.lbl}</div>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════
+//  BILLS RENDER
+// ══════════════════════════════════════════
+const SC={due:'#FB923C',upcoming:'#FBBF24',ok:'#4ADE80'};
+const SL={due:'Due Soon',upcoming:'Upcoming',ok:'Paid'};
+function renderBills(){
+  const total=DB.bills.reduce((s,b)=>s+(b.paid?0:b.amount),0);
+  const overdue=DB.bills.filter(b=>b.status==='due'&&!b.paid).reduce((s,b)=>s+b.amount,0);
+  document.getElementById('bill-total').textContent='₹'+total.toLocaleString('en-IN');
+  document.getElementById('bill-overdue').textContent='₹'+overdue.toLocaleString('en-IN');
+  document.getElementById('bills-list').innerHTML=DB.bills.map((b,i)=>`
+    <div class="card fu" style="padding:16px;box-shadow:0 0 18px ${SC[b.status]}14,0 6px 20px rgba(0,0,0,.4);animation-delay:${i*.06}s;">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div style="font-size:24px;">${b.icon}</div>
+        <div style="flex:1;">
+          <div style="font-weight:700;font-size:15px;">${b.name}</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;">Due ${b.due}</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-weight:800;font-size:16px;">₹${b.amount.toLocaleString('en-IN')}</div>
+          ${badge(SC[b.status],SL[b.status])}
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-left:6px;">
+          <button onclick="editItem('bill',${b.id})" style="background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:8px;width:28px;height:28px;color:var(--sub);font-size:13px;cursor:pointer;">✏</button>
+          <button onclick="deleteItem('bill',${b.id})" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);border-radius:8px;width:28px;height:28px;color:var(--red);font-size:13px;cursor:pointer;">🗑</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════
+//  MEDS RENDER
+// ══════════════════════════════════════════
+function renderMeds(){
+  const done=DB.meds.filter(m=>m.taken).length, total=DB.meds.length;
+  const pct=total?Math.round((done/total)*100):0;
+  document.getElementById('med-progress-card').innerHTML=`
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span style="font-size:26px;">${pct>=100?'🎉':'✅'}</span>
+      <div style="flex:1;">
+        <div style="font-weight:700;font-size:14px;">${done} of ${total} medicines taken</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px;">${total-done} remaining today</div>
+      </div>
+      <div style="font-size:18px;font-weight:800;color:var(--teal);">${pct}%</div>
+    </div>
+    <div style="margin-top:12px;height:5px;background:rgba(255,255,255,.07);border-radius:99px;overflow:hidden;">
+      <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,#2DD4BF,#4F9FFF);border-radius:99px;transition:width .5s ease;"></div>
+    </div>`;
+  document.getElementById('meds-list').innerHTML=DB.meds.map((m,i)=>`
+    <div class="card fu" onclick="toggleMed(${m.id})" style="padding:15px;opacity:${m.taken?.6:1};box-shadow:0 0 18px ${m.taken?'rgba(45,212,191,.1)':'rgba(251,146,60,.14)'},0 6px 20px rgba(0,0,0,.4);animation-delay:${i*.06}s;cursor:pointer;">
+      <div style="display:flex;align-items:center;gap:13px;">
+        <div style="width:42px;height:42px;border-radius:14px;background:${m.taken?'rgba(45,212,191,.18)':'rgba(251,146,60,.18)'};border:1px solid ${m.taken?'rgba(45,212,191,.35)':'rgba(251,146,60,.35)'};display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;">${m.taken?'✅':m.icon}</div>
+        <div style="flex:1;">
+          <div style="font-weight:700;font-size:14px;">${m.name}</div>
+          <div style="font-size:12px;color:var(--muted);">${m.person} · ${m.time}</div>
+        </div>
+        ${badge(m.taken?'#2DD4BF':'#FB923C',m.taken?'Done':'Pending')}
+        <div style="display:flex;gap:5px;margin-left:4px;">
+          <button onclick="event.stopPropagation();editItem('med',${m.id})" style="background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:8px;width:28px;height:28px;color:var(--sub);font-size:13px;cursor:pointer;">✏</button>
+          <button onclick="event.stopPropagation();deleteItem('med',${m.id})" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);border-radius:8px;width:28px;height:28px;color:var(--red);font-size:13px;cursor:pointer;">🗑</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+function toggleMed(id){ DB.meds=DB.meds.map(m=>m.id===id?{...m,taken:!m.taken}:m); saveAll(); renderMeds(); const m=DB.meds.find(m=>m.id===id); toast(m.taken?'✅ Medicine done!':'⏰ Medicine unmarked'); }
+
+// ══════════════════════════════════════════
+//  DOCS RENDER
+// ══════════════════════════════════════════
+const DSC={ok:'#4ADE80',warn:'#FBBF24',critical:'#FB923C'};
+const DSL={ok:'Valid',warn:'Expiring',critical:'Urgent!'};
+function renderDocs(){
+  const banner=document.getElementById('docs-lock-banner');
+  const fab=document.getElementById('docs-fab');
+  if(isLocked('documents')){ renderLockBanner('docs-lock-banner'); document.getElementById('docs-list').innerHTML=''; fab.style.display='none'; return; }
+  if(banner) banner.innerHTML=''; fab.style.display='flex';
+  document.getElementById('docs-list').innerHTML=DB.docs.map((d,i)=>`
+    <div class="card fu" style="padding:15px;box-shadow:0 0 18px ${DSC[d.s]}14,0 6px 20px rgba(0,0,0,.4);animation-delay:${i*.06}s;">
+      <div style="display:flex;align-items:center;gap:13px;">
+        <div style="width:44px;height:44px;border-radius:14px;background:${DSC[d.s]}16;border:1px solid ${DSC[d.s]}30;display:flex;align-items:center;justify-content:center;font-size:21px;flex-shrink:0;">${d.icon}</div>
+        <div style="flex:1;">
+          <div style="font-weight:700;font-size:14px;">${d.name}</div>
+          <div style="font-size:12px;color:var(--muted);">${d.person} · ${d.expiry}</div>
+          ${d.days?`<div style="font-size:11px;color:${DSC[d.s]};margin-top:2px;font-weight:700;">⚠ ${d.days} days left</div>`:''}
+        </div>
+        ${badge(DSC[d.s],DSL[d.s])}
+        <div style="display:flex;gap:5px;margin-left:4px;">
+          <button onclick="editItem('doc',${d.id})" style="background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:8px;width:28px;height:28px;color:var(--sub);font-size:13px;cursor:pointer;">✏</button>
+          <button onclick="deleteItem('doc',${d.id})" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);border-radius:8px;width:28px;height:28px;color:var(--red);font-size:13px;cursor:pointer;">🗑</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════
+//  TASKS RENDER
+// ══════════════════════════════════════════
+const PC={high:'#FB923C',medium:'#FBBF24',low:'#2DD4BF'};
+function renderTasks(){
+  const total=DB.tasks.length, done=DB.tasks.filter(t=>t.done).length, pend=total-done;
+  document.getElementById('task-stats').innerHTML=[
+    {icon:'📋',val:total,lbl:'Total',c:'#4ADE80'},{icon:'✅',val:done,lbl:'Done',c:'#2DD4BF'},{icon:'⏳',val:pend,lbl:'Pending',c:'#FB923C'}
+  ].map(s=>`<div class="card" style="padding:12px;text-align:center;box-shadow:0 0 14px ${s.c}12;"><div style="font-size:20px;font-weight:800;color:${s.c};">${s.val}</div><div style="font-size:11px;color:var(--muted);margin-top:2px;">${s.lbl}</div></div>`).join('');
+  document.getElementById('tasks-list').innerHTML=DB.tasks.map((t,i)=>`
+    <div class="card fu" onclick="toggleTask(${t.id})" style="padding:14px 15px;opacity:${t.done?.5:1};box-shadow:0 0 16px ${t.done?'rgba(255,255,255,.03)':PC[t.pri]+'14'},0 6px 20px rgba(0,0,0,.4);animation-delay:${i*.06}s;cursor:pointer;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:26px;height:26px;border-radius:50%;border:2px solid ${t.done?'#4ADE80':PC[t.pri]};display:flex;align-items:center;justify-content:center;background:${t.done?'rgba(74,222,128,.25)':'transparent'};flex-shrink:0;">${t.done?`<span style="color:#4ADE80;font-size:13px;">✓</span>`:''}</div>
+        <div style="flex:1;">
+          <div style="font-size:14px;font-weight:600;text-decoration:${t.done?'line-through':'none'};color:${t.done?'var(--muted)':'var(--text)'};">${t.text}</div>
+          <div style="font-size:12px;color:var(--muted);">${t.person}</div>
+        </div>
+        ${badge(PC[t.pri],t.pri)}
+        <div style="display:flex;gap:5px;margin-left:4px;">
+          <button onclick="event.stopPropagation();editItem('task',${t.id})" style="background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:8px;width:28px;height:28px;color:var(--sub);font-size:13px;cursor:pointer;">✏</button>
+          <button onclick="event.stopPropagation();deleteItem('task',${t.id})" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);border-radius:8px;width:28px;height:28px;color:var(--red);font-size:13px;cursor:pointer;">🗑</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+function toggleTask(id){ DB.tasks=DB.tasks.map(t=>t.id===id?{...t,done:!t.done}:t); saveAll(); renderTasks(); toast(DB.tasks.find(t=>t.id===id).done?'✅ Task done!':'↩ Task reopened'); }
+
+// ══════════════════════════════════════════
+//  NEARBY RENDER
+// ══════════════════════════════════════════
+const NEAR_CATS=['All','Plumber','Electrician','Mechanic','Doctor','Carpenter'];
+function renderNearby(){
+  const banner=document.getElementById('near-lock-banner');
+  const tabs=document.getElementById('near-tabs');
+  const list=document.getElementById('nearby-list');
+  if(isLocked('nearby')){ renderLockBanner('near-lock-banner'); list.innerHTML=''; tabs.style.display='none'; return; }
+  if(banner) banner.innerHTML=''; tabs.style.display='flex';
+  tabs.innerHTML=NEAR_CATS.map(c=>`<button class="ftab${c===S.nearCat?' on':''}" style="${c===S.nearCat?'color:var(--orange);background:rgba(251,146,60,.16);border-color:rgba(251,146,60,.4);':''}" onclick="setNearCat('${c}')">${c}</button>`).join('');
+  const filtered=S.nearCat==='All'?DB.nearby:DB.nearby.filter(x=>x.cat===S.nearCat);
+  list.innerHTML=filtered.map((s,i)=>`
+    <div class="card fu" style="padding:15px;box-shadow:0 0 18px ${s.avail?'rgba(251,146,60,.14)':'rgba(71,85,105,.08)'},0 6px 20px rgba(0,0,0,.4);animation-delay:${i*.06}s;">
+      <div style="display:flex;align-items:center;gap:13px;">
+        <div style="width:44px;height:44px;border-radius:14px;background:rgba(251,146,60,.15);border:1px solid rgba(251,146,60,.28);display:flex;align-items:center;justify-content:center;font-size:21px;flex-shrink:0;">${s.icon}</div>
+        <div style="flex:1;">
+          <div style="font-weight:700;font-size:14px;">${s.name}</div>
+          <div style="font-size:12px;color:var(--muted);">⭐ ${s.rating} · ${s.dist}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px;align-items:flex-end;">
+          ${badge(s.avail?'#4ADE80':'#475569',s.avail?'Available':'Busy')}
+          <span style="font-size:12px;color:var(--blue);cursor:pointer;" onclick="toast('📞 Calling ${s.phone}...')">📞 Call</span>
+        </div>
+      </div>
+    </div>`).join('');
+}
+function setNearCat(c){ S.nearCat=c; renderNearby(); }
+
+// ══════════════════════════════════════════
+//  GROCERY RENDER
+// ══════════════════════════════════════════
+function renderGrocery(){
+  const total=DB.grocery.length, done=DB.grocery.filter(g=>g.done).length;
+  const pct=total?Math.round((done/total)*100):0;
+  document.getElementById('groc-summary').innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div><div style="font-size:22px;font-weight:800;color:var(--pink);">${total-done} items left</div><div style="font-size:12px;color:var(--muted);">to buy today</div></div>
+      <div style="width:52px;height:52px;border-radius:50%;background:conic-gradient(#F472B6 ${pct*3.6}deg,rgba(255,255,255,.07) 0deg);display:flex;align-items:center;justify-content:center;">
+        <div style="width:38px;height:38px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--pink);">${pct}%</div>
+      </div>
+    </div>`;
+  document.getElementById('grocery-list').innerHTML=DB.grocery.map((g,i)=>`
+    <div class="card fu" onclick="toggleGrocery(${g.id})" style="padding:13px 15px;opacity:${g.done?.45:1};box-shadow:0 0 16px ${g.done?'rgba(255,255,255,.02)':'rgba(244,114,182,.12)'},0 6px 20px rgba(0,0,0,.4);animation-delay:${i*.05}s;cursor:pointer;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:26px;height:26px;border-radius:50%;border:2px solid ${g.done?'#F472B6':'rgba(244,114,182,.4)'};display:flex;align-items:center;justify-content:center;background:${g.done?'rgba(244,114,182,.28)':'transparent'};flex-shrink:0;">${g.done?`<span style="color:#F472B6;font-size:12px;">✓</span>`:''}</div>
+        <div style="flex:1;font-size:14px;font-weight:600;text-decoration:${g.done?'line-through':'none'};color:${g.done?'var(--muted)':'var(--text)'};">${g.name}</div>
+        <span style="font-size:12px;color:var(--muted);">${g.qty}</span>
+        <div style="display:flex;gap:5px;">
+          <button onclick="event.stopPropagation();editItem('grocery',${g.id})" style="background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:8px;width:26px;height:26px;color:var(--sub);font-size:12px;cursor:pointer;">✏</button>
+          <button onclick="event.stopPropagation();deleteItem('grocery',${g.id})" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);border-radius:8px;width:26px;height:26px;color:var(--red);font-size:12px;cursor:pointer;">🗑</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+function toggleGrocery(id){ DB.grocery=DB.grocery.map(g=>g.id===id?{...g,done:!g.done}:g); saveAll(); renderGrocery(); }
+
+// ══════════════════════════════════════════
+//  NOTICES RENDER
+// ══════════════════════════════════════════
+function renderNotices(){
+  const banner=document.getElementById('notice-lock-banner');
+  const fab=document.getElementById('notice-fab');
+  if(isLocked('notices')){ renderLockBanner('notice-lock-banner'); document.getElementById('notices-list').innerHTML=''; fab.style.display='none'; return; }
+  if(banner) banner.innerHTML=''; fab.style.display='flex';
+  document.getElementById('notices-list').innerHTML=DB.notices.map((n,i)=>`
+    <div class="card fu" style="padding:17px;border-left:3px solid ${n.c}55;box-shadow:0 0 18px ${n.c}12,0 6px 20px rgba(0,0,0,.4);animation-delay:${i*.06}s;">
+      <div style="display:flex;gap:13px;align-items:flex-start;">
+        <div style="width:44px;height:44px;border-radius:14px;background:${n.c}16;border:1px solid ${n.c}28;display:flex;align-items:center;justify-content:center;font-size:21px;flex-shrink:0;">${n.icon}</div>
+        <div style="flex:1;">
+          <div style="font-weight:700;font-size:14px;margin-bottom:3px;">${n.title}</div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">${n.school}</div>
+          <div style="display:flex;gap:8px;align-items:center;">${badge(n.c,n.tag)}<span style="font-size:12px;color:var(--muted);">📅 ${n.date}</span></div>
+        </div>
+        <div style="display:flex;gap:5px;">
+          <button onclick="editItem('notice',${n.id})" style="background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:8px;width:28px;height:28px;color:var(--sub);font-size:13px;cursor:pointer;">✏</button>
+          <button onclick="deleteItem('notice',${n.id})" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);border-radius:8px;width:28px;height:28px;color:var(--red);font-size:13px;cursor:pointer;">🗑</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════
+//  ADD / EDIT MODAL
+// ══════════════════════════════════════════
+const ADD_CONFIGS = {
+  bill:{ title:'Bill Add Karein', fields:[{id:'name',label:'Bill ka naam',ph:'e.g. Electricity'},{id:'amount',label:'Amount (₹)',ph:'e.g. 1240',type:'number'},{id:'due',label:'Due Date',ph:'e.g. Apr 30'},{id:'icon',label:'Icon (emoji)',ph:'e.g. ⚡'}] },
+  med:{ title:'Medicine Add Karein', fields:[{id:'name',label:'Medicine ka naam',ph:'e.g. Paracetamol 500mg'},{id:'person',label:'Kiska (naam)',ph:'e.g. Papa'},{id:'time',label:'Time',ph:'e.g. 8:00 AM'}] },
+  doc:{ title:'Document Add Karein', fields:[{id:'name',label:'Document ka naam',ph:'e.g. Voter ID'},{id:'person',label:'Kiska',ph:'e.g. Mummy'},{id:'expiry',label:'Expiry Date',ph:'e.g. Dec 2026'},{id:'days',label:'Days remaining (optional)',ph:'e.g. 120',type:'number'}] },
+  task:{ title:'Task Add Karein', fields:[{id:'text',label:'Task kya karna hai',ph:'e.g. Fix leaking tap'},{id:'person',label:'Kiska task',ph:'e.g. Papa'},{id:'pri',label:'Priority (high/medium/low)',ph:'medium'}] },
+  grocery:{ title:'Item Add Karein', fields:[{id:'name',label:'Item ka naam',ph:'e.g. आलू (Potatoes)'},{id:'qty',label:'Quantity',ph:'e.g. 1 kg'}] },
+  notice:{ title:'Notice Add Karein', fields:[{id:'title',label:'Notice ka title',ph:'e.g. Sports Day'},{id:'school',label:'School/College',ph:'e.g. DPS Noida'},{id:'date',label:'Date',ph:'e.g. May 10'},{id:'tag',label:'Tag',ph:'e.g. Event'}] },
+};
+function openAdd(type){
+  S.addType=type; S.editMode=false; S.editId=null;
+  const cfg=ADD_CONFIGS[type]; if(!cfg)return;
+  document.getElementById('add-title').textContent=cfg.title;
+  document.getElementById('add-fields').innerHTML=cfg.fields.map(f=>`
+    <div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:6px;letter-spacing:.05em;">${f.label}</div>
+      <input class="inp" id="af-${f.id}" placeholder="${f.ph}" type="${f.type||'text'}"/>
+    </div>`).join('');
+  document.getElementById('add-submit-btn').textContent='✅ Add Karein';
+  document.getElementById('add-overlay').classList.add('show');
+}
+function editItem(type, id){
+  if(!S.isPremium){ toast('✏️ Edit ke liye Premium chahiye'); return; }
+  const map={bill:DB.bills,med:DB.meds,doc:DB.docs,task:DB.tasks,grocery:DB.grocery,notice:DB.notices};
+  const item=map[type]?.find(x=>x.id===id);
+  if(!item)return;
+  S.addType=type; S.editMode=true; S.editId=id;
+  const cfg=ADD_CONFIGS[type]; if(!cfg)return;
+  document.getElementById('add-title').textContent='Edit '+cfg.title.replace('Add Karein','');
+  document.getElementById('add-fields').innerHTML=cfg.fields.map(f=>`
+    <div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:6px;letter-spacing:.05em;">${f.label}</div>
+      <input class="inp" id="af-${f.id}" placeholder="${f.ph}" type="${f.type||'text'}" value="${item[f.id]||''}"/>
+    </div>`).join('');
+  document.getElementById('add-submit-btn').textContent='💾 Save Karein';
+  document.getElementById('add-overlay').classList.add('show');
+}
+function closeAdd(){ document.getElementById('add-overlay').classList.remove('show'); }
+function submitAdd(){
+  const type=S.addType; const cfg=ADD_CONFIGS[type]; if(!cfg)return;
+  const vals={};
+  cfg.fields.forEach(f=>{ vals[f.id]=document.getElementById('af-'+f.id)?.value?.trim()||''; });
+  if(!vals[cfg.fields[0].id]){ toast('❗ Pehla field zaruri hai!'); document.getElementById('af-'+cfg.fields[0].id)?.animate([{borderColor:'#F87171'},{borderColor:'var(--border)'}],{duration:600}); return; }
+  if(S.editMode){
+    const map={bill:DB.bills,med:DB.meds,doc:DB.docs,task:DB.tasks,grocery:DB.grocery,notice:DB.notices};
+    const idx=map[type].findIndex(x=>x.id===S.editId);
+    if(idx>=0) map[type][idx]={...map[type][idx],...vals};
+    toast('💾 Saved!');
+  } else {
+    const builders={
+      bill:()=>({id:nextId(DB.bills),name:vals.name,amount:parseInt(vals.amount)||0,due:vals.due||'TBD',status:'upcoming',icon:vals.icon||'📋',paid:false}),
+      med:()=>({id:nextId(DB.meds),name:vals.name,person:vals.person||'Family',time:vals.time||'8:00 AM',taken:false,icon:'💊'}),
+      doc:()=>({id:nextId(DB.docs),name:vals.name,person:vals.person||'Family',expiry:vals.expiry||'N/A',days:parseInt(vals.days)||null,icon:'📄',s:'ok'}),
+      task:()=>({id:nextId(DB.tasks),text:vals.text,person:vals.person||'Family',done:false,pri:['high','medium','low'].includes(vals.pri)?vals.pri:'medium'}),
+      grocery:()=>({id:nextId(DB.grocery),name:vals.name,qty:vals.qty||'1 unit',done:false}),
+      notice:()=>({id:nextId(DB.notices),title:vals.title,school:vals.school||'School',date:vals.date||'TBD',tag:vals.tag||'Notice',icon:'📢',c:'#94A3B8'}),
+    };
+    const map={bill:DB.bills,med:DB.meds,doc:DB.docs,task:DB.tasks,grocery:DB.grocery,notice:DB.notices};
+    map[type].push(builders[type]());
+    toast('✅ Added!');
+  }
+  saveAll(); closeAdd(); renderScreen(curScreen);
+}
+
+// ══════════════════════════════════════════
+//  DELETE + UNDO
+// ══════════════════════════════════════════
+function deleteItem(type,id){
+  const map={bill:DB.bills,med:DB.meds,doc:DB.docs,task:DB.tasks,grocery:DB.grocery,notice:DB.notices};
+  const idx=map[type].findIndex(x=>x.id===id);
+  if(idx<0)return;
+  const deleted=map[type].splice(idx,1)[0];
+  saveAll(); renderScreen(curScreen);
+  showUndo(`"${deleted.name||deleted.text||deleted.title}" delete hua`, ()=>{ map[type].splice(idx,0,deleted); saveAll(); renderScreen(curScreen); });
+}
+
+// ══════════════════════════════════════════
+//  BACKUP / RESTORE
+// ══════════════════════════════════════════
+function openBackup(){
+  document.getElementById('settings-overlay').classList.remove('show');
+  const code=btoa(JSON.stringify({db:DB,user:S.user,v:2}));
+  document.getElementById('backup-code-display').textContent=code;
+  document.getElementById('backup-overlay').classList.add('show');
+}
+function doBackup(){
+  const code=document.getElementById('backup-code-display').textContent;
+  try{ navigator.clipboard.writeText(code); toast('📋 Backup code copied!'); }
+  catch(e){ toast('Code ko manually copy karein'); }
+}
+function doRestore(){
+  const code=document.getElementById('restore-input').value.trim();
+  if(!code){ toast('❗ Backup code paste karein'); return; }
+  try{
+    const data=JSON.parse(atob(code));
+    if(!data.db||!data.v){ toast('❗ Invalid backup code'); return; }
+    DB=data.db; S.user=data.user||S.user;
+    saveAll(); renderAll(); updateHomeUI();
+    document.getElementById('backup-overlay').classList.remove('show');
+    toast('✅ Data restored!');
+  } catch(e){ toast('❗ Invalid backup code'); }
+}
+
+// ══════════════════════════════════════════
+//  GUIDE
+// ══════════════════════════════════════════
+function openGuide(){
+  const steps=[
+    {icon:'🏠',title:'Home Screen',desc:'Sabse pehle home screen dikhega. Yahaan sab features ke buttons hain. Bas ek tap karein.'},
+    {icon:'💡',title:'Bill Reminders',desc:'Apne sabhi bills (bijli, paani, gas) yahaan add karein. Due date se pehle reminder milega.'},
+    {icon:'💊',title:'Medicine Reminder',desc:'Family ke sab members ki medicines add karein. Daily reminder ke liye time set karein.'},
+    {icon:'📄',title:'Document Alerts 👑',desc:'Important documents (Aadhaar, Passport) ki expiry track karein. Premium feature.'},
+    {icon:'✅',title:'Family Tasks',desc:'Ghar ke kaam yahan note karein. Complete hone par tick karein.'},
+    {icon:'📍',title:'Nearby Services 👑',desc:'Plumber, Electrician, Doctor dhundein. Premium feature.'},
+    {icon:'🛒',title:'Grocery List',desc:'Market jane se pehle list banayen. Done hone par tick karein.'},
+    {icon:'👑',title:'Premium Upgrade',desc:'Sirf ₹15 mein sab features unlock karein aur ads hatayein!'},
+    {icon:'💾',title:'Backup & Restore',desc:'Settings mein jaayein > Backup karein. Ek code milega. Phone change hone par restore karein.'},
+    {icon:'🌐',title:'Language',desc:'Top right mein HI/EN/MIX select karein apni bhasha ke hisab se.'},
+  ];
+  document.getElementById('guide-content').innerHTML=steps.map((s,i)=>`
+    <div class="card fu" style="padding:16px;animation-delay:${i*.05}s;">
+      <div style="display:flex;gap:14px;align-items:flex-start;">
+        <div style="width:40px;height:40px;border-radius:14px;background:rgba(79,159,255,.12);border:1px solid rgba(79,159,255,.22);display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;">${s.icon}</div>
+        <div>
+          <div style="font-weight:700;font-size:14px;margin-bottom:4px;">${s.title}</div>
+          <div style="font-size:13px;color:var(--sub);line-height:1.5;">${s.desc}</div>
+        </div>
+      </div>
+    </div>`).join('');
+  document.getElementById('guide-overlay').classList.add('show');
+}
+function closeGuide(){ document.getElementById('guide-overlay').classList.remove('show'); toast('🎯 Guide complete! Aap tayyar hain.'); }
+
+// ══════════════════════════════════════════
+//  SETTINGS
+// ══════════════════════════════════════════
+function resetApp(){
+  if(!confirm('Sab data delete ho jayega. Confirm?')) return;
+  localStorage.clear(); location.reload();
+}
+
+// ══════════════════════════════════════════
+//  ONBOARDING
+// ══════════════════════════════════════════
+function finishOnboard(){
+  const name=document.getElementById('ob-name').value.trim();
+  const city=document.getElementById('ob-city').value.trim();
+  if(!name){ document.getElementById('ob-name').style.borderColor='#F87171'; setTimeout(()=>document.getElementById('ob-name').style.borderColor='',1200); return; }
+  S.user={name:name||'Sharma Parivaar',city:city||'India',id:uid()};
+  save('onboarded',true);
+  saveAll();
+  document.getElementById('onboard').classList.remove('show');
+  showScreen('home',true);
+  setTimeout(()=>showAppOpenAd(), 600);
+  toast('🎉 Swagat hai '+S.user.name+'!');
+}
+
+// ══════════════════════════════════════════
+//  STARS
+// ══════════════════════════════════════════
+function genStars(){
+  const c=document.getElementById('stars'); if(!c)return;
+  for(let i=0;i<70;i++){
+    const el=document.createElement('div');
+    const sz=Math.random()*2.2+0.4;
+    el.style.cssText=`position:absolute;left:${Math.random()*100}%;top:${Math.random()*100}%;width:${sz}px;height:${sz}px;border-radius:50%;background:rgba(255,255,255,${Math.random()*.8+.2});animation:twinkle ${Math.random()*2+1.5}s ${Math.random()*3}s infinite ease-in-out;`;
+    c.appendChild(el);
+  }
+}
+
+// ══════════════════════════════════════════
+//  SPLASH SEQUENCE
+// ══════════════════════════════════════════
+function runSplash(){
+  genStars();
+  const loadMsgs=['Initializing...','Loading features...','Almost ready...','GharOS ready!'];
+  let mi=0;
+  const miv=setInterval(()=>{ if(++mi>=loadMsgs.length){clearInterval(miv);return;} document.getElementById('sp-load-txt').textContent=loadMsgs[mi]; },700);
+
+  setTimeout(()=>{ document.getElementById('orb-ring').style.opacity='1'; },300);
+  setTimeout(()=>{ const ic=document.getElementById('sp-icon'); ic.style.opacity='1'; ic.style.transform='scale(1)'; },500);
+  setTimeout(()=>{ document.getElementById('sp-text').style.animation='logoReveal .9s .1s ease forwards,shimmerText 4s 1.2s linear infinite'; document.getElementById('sp-text').style.opacity='0'; setTimeout(()=>{ document.getElementById('sp-text').style.opacity='1'; },150); },700);
+  setTimeout(()=>{ document.getElementById('sp-tag').style.opacity='1'; },1700);
+  setTimeout(()=>{ document.getElementById('sp-pow').style.opacity='1'; },2000);
+  setTimeout(()=>{ document.getElementById('sp-prog').style.opacity='1'; document.getElementById('sp-fill').style.animation='progress 1.3s ease forwards'; },2400);
+  setTimeout(()=>{
+    const sp=document.getElementById('splash');
+    sp.style.transition='opacity .55s ease, transform .55s ease';
+    sp.style.opacity='0'; sp.style.transform='scale(1.05)';
+  },3700);
+  setTimeout(()=>{
+    // Check onboarding
+    if(!load('onboarded',false)){
+      document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+      document.getElementById('onboard').classList.add('show');
+    } else {
+      loadAll(); checkPremium(); trackOpen();
+      showScreen('home',true);
+      setTimeout(()=>showAppOpenAd(),800);
+    }
+  },4250);
+}
+
+// ══════════════════════════════════════════
+//  CLOCK TICK
+// ══════════════════════════════════════════
+setInterval(()=>{ if(curScreen==='home') updateHomeTime(); },1000);
+
+// ══════════════════════════════════════════
+//  ONLINE/OFFLINE STATUS
+// ══════════════════════════════════════════
+window.addEventListener('online',()=>toast('🌐 Internet connected!'));
+window.addEventListener('offline',()=>toast('📴 Offline mode – data locally saved'));
+
+// ══════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════
+window.addEventListener('load',()=>{
+  loadAll();
+  runSplash();
+});
+</script>
+</body>
+</html>
